@@ -1,0 +1,9 @@
+---
+title: "Backend API with R and plumber"
+output: html_document
+runtime: shiny_prerendered
+editor_options: 
+  chunk_output_type: console
+---
+
+source("api.R")
