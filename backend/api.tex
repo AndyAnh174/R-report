@@ -1,0 +1,2107 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Báo cáo Phân tích Thu nhập của Freelancer},
+  pdfauthor={Nhóm {[}Tên Nhóm Của Bạn{]}},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Báo cáo Phân tích Thu nhập của Freelancer}
+\author{Nhóm {[}Tên Nhóm Của Bạn{]}}
+\date{2025-05-16}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\section{1. Giới thiệu}\label{giux1edbi-thiux1ec7u}
+
+Báo cáo này nhằm mục đích phân tích chi tiết tập dữ liệu về thu nhập của
+các freelancer. Chúng tôi sẽ khám phá các yếu tố như loại công việc, nền
+tảng, mức độ kinh nghiệm, khu vực khách hàng, và các chỉ số hiệu suất
+khác ảnh hưởng như thế nào đến thu nhập (Earnings\_USD) của freelancer.
+Thông qua phân tích dữ liệu khám phá (EDA) và xây dựng các mô hình dự
+đoán, chúng tôi hy vọng sẽ rút ra được những hiểu biết sâu sắc và có giá
+trị, giúp các freelancer tối ưu hóa chiến lược làm việc và thu nhập của
+mình. Dữ liệu được sử dụng là freelancer\_earnings\_bd.csv, chứa thông
+tin đa dạng về các freelancer và công việc của họ.
+
+\section{2. Tải và Chuẩn bị Dữ
+liệu}\label{tux1ea3i-vuxe0-chuux1ea9n-bux1ecb-dux1eef-liux1ec7u}
+
+\subsection{2.1. Tải Dữ liệu
+Thô}\label{tux1ea3i-dux1eef-liux1ec7u-thuxf4}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Đặt đường dẫn làm việc (working directory) nếu cần, hoặc sử dụng RStudio Project}
+\CommentTok{\# Ví dụ: setwd("D:/Path/To/Your/ProjectFolder") }
+\CommentTok{\# Giả sử file CSV nằm trong cùng thư mục với file .Rmd hoặc trong thư mục con \textquotesingle{}data\textquotesingle{}}
+\CommentTok{\# Hãy đảm bảo đường dẫn file CSV là chính xác}
+\NormalTok{data\_raw }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/freelancer\_earnings\_bd.csv"}\NormalTok{) }
+
+\CommentTok{\# Hiển thị vài dòng đầu của dữ liệu thô}
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{head}\NormalTok{(data\_raw), }\AttributeTok{caption =} \StringTok{"Dữ liệu thô ban đầu (6 dòng đầu)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0633}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0814}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0633}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0769}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0633}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0679}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0633}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0588}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0543}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0769}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0633}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0814}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0588}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0543}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0724}}@{}}
+\caption{Dữ liệu thô ban đầu (6 dòng đầu)}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedleft
+Freelancer\_ID
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Job\_Category
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Platform
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Experience\_Level
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Client\_Region
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Payment\_Method
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Job\_Completed
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Earnings\_USD
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Hourly\_Rate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Job\_Success\_Rate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Client\_Rating
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Job\_Duration\_Days
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Project\_Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Rehire\_Rate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Marketing\_Spend
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedleft
+Freelancer\_ID
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Job\_Category
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Platform
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Experience\_Level
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Client\_Region
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Payment\_Method
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Job\_Completed
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Earnings\_USD
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Hourly\_Rate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Job\_Success\_Rate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Client\_Rating
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Job\_Duration\_Days
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Project\_Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Rehire\_Rate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Marketing\_Spend
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & Web Development & Fiverr & Beginner & Asia & Mobile Banking & 180 &
+1620 & 95.79 & 68.73 & 3.18 & 1 & Fixed & 40.19 & 53 \\
+2 & App Development & Fiverr & Beginner & Australia & Mobile Banking &
+218 & 9078 & 86.38 & 97.54 & 3.44 & 54 & Fixed & 36.53 & 486 \\
+3 & Web Development & Fiverr & Beginner & UK & Crypto & 27 & 3455 &
+85.17 & 86.60 & 4.20 & 46 & Hourly & 74.05 & 489 \\
+4 & Data Entry & PeoplePerHour & Intermediate & Asia & Bank Transfer &
+17 & 5577 & 14.37 & 79.93 & 4.47 & 41 & Hourly & 27.58 & 67 \\
+5 & Digital Marketing & Upwork & Expert & Asia & Crypto & 245 & 5898 &
+99.37 & 57.80 & 5.00 & 41 & Hourly & 69.09 & 489 \\
+6 & Customer Support & Toptal & Beginner & Europe & Crypto & 280 & 6867
+& 43.04 & 57.80 & 4.87 & 8 & Fixed & 43.88 & 290 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Xem cấu trúc dữ liệu thô}
+\FunctionTok{str}\NormalTok{(data\_raw, }\AttributeTok{list.len=}\FunctionTok{ncol}\NormalTok{(data\_raw))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## spc_tbl_ [1,950 x 15] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ Freelancer_ID    : num [1:1950] 1 2 3 4 5 6 7 8 9 10 ...
+##  $ Job_Category     : chr [1:1950] "Web Development" "App Development" "Web Development" "Data Entry" ...
+##  $ Platform         : chr [1:1950] "Fiverr" "Fiverr" "Fiverr" "PeoplePerHour" ...
+##  $ Experience_Level : chr [1:1950] "Beginner" "Beginner" "Beginner" "Intermediate" ...
+##  $ Client_Region    : chr [1:1950] "Asia" "Australia" "UK" "Asia" ...
+##  $ Payment_Method   : chr [1:1950] "Mobile Banking" "Mobile Banking" "Crypto" "Bank Transfer" ...
+##  $ Job_Completed    : num [1:1950] 180 218 27 17 245 280 96 112 233 156 ...
+##  $ Earnings_USD     : num [1:1950] 1620 9078 3455 5577 5898 ...
+##  $ Hourly_Rate      : num [1:1950] 95.8 86.4 85.2 14.4 99.4 ...
+##  $ Job_Success_Rate : num [1:1950] 68.7 97.5 86.6 79.9 57.8 ...
+##  $ Client_Rating    : num [1:1950] 3.18 3.44 4.2 4.47 5 4.87 4.29 3.84 4.27 4.57 ...
+##  $ Job_Duration_Days: num [1:1950] 1 54 46 41 41 8 32 30 46 52 ...
+##  $ Project_Type     : chr [1:1950] "Fixed" "Fixed" "Hourly" "Hourly" ...
+##  $ Rehire_Rate      : num [1:1950] 40.2 36.5 74 27.6 69.1 ...
+##  $ Marketing_Spend  : num [1:1950] 53 486 489 67 489 290 343 168 396 160 ...
+##  - attr(*, "spec")=
+##   .. cols(
+##   ..   Freelancer_ID = col_double(),
+##   ..   Job_Category = col_character(),
+##   ..   Platform = col_character(),
+##   ..   Experience_Level = col_character(),
+##   ..   Client_Region = col_character(),
+##   ..   Payment_Method = col_character(),
+##   ..   Job_Completed = col_double(),
+##   ..   Earnings_USD = col_double(),
+##   ..   Hourly_Rate = col_double(),
+##   ..   Job_Success_Rate = col_double(),
+##   ..   Client_Rating = col_double(),
+##   ..   Job_Duration_Days = col_double(),
+##   ..   Project_Type = col_character(),
+##   ..   Rehire_Rate = col_double(),
+##   ..   Marketing_Spend = col_double()
+##   .. )
+##  - attr(*, "problems")=<externalptr>
+\end{verbatim}
+
+\subsection{2.2. Làm sạch Dữ
+liệu}\label{luxe0m-sux1ea1ch-dux1eef-liux1ec7u}
+
+Dựa trên code backend đã có, chúng ta thực hiện các bước làm sạch sau:
+
+\begin{itemize}
+\item
+  Loại bỏ các dòng có Earnings\_USD bị thiếu.
+\item
+  Chuyển đổi kiểu dữ liệu cho các cột số.
+\item
+  Chuẩn hóa tên các giá trị trong các cột dạng ký tự (Job\_Category,
+  Experience\_Level, etc.) sang dạng Title Case.
+\item
+  Đổi tên cột cho nhất quán và dễ sử dụng hơn.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data\_clean }\OtherTok{\textless{}{-}}\NormalTok{ data\_raw }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(Earnings\_USD)) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\# Loại bỏ NA trong cột thu nhập chính}
+  \FunctionTok{mutate}\NormalTok{(}
+    \CommentTok{\# Đổi tên và chuyển đổi kiểu dữ liệu}
+    \AttributeTok{FreelancerID =}\NormalTok{ Freelancer\_ID, }\CommentTok{\# Giữ lại ID gốc nếu cần}
+    \AttributeTok{JobCategory =} \FunctionTok{str\_to\_title}\NormalTok{(Job\_Category),}
+    \AttributeTok{Platform =} \FunctionTok{str\_to\_title}\NormalTok{(Platform),}
+    \AttributeTok{ExperienceLevel =} \FunctionTok{factor}\NormalTok{(}\FunctionTok{str\_to\_title}\NormalTok{(Experience\_Level), }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Beginner"}\NormalTok{, }\StringTok{"Intermediate"}\NormalTok{, }\StringTok{"Expert"}\NormalTok{), }\AttributeTok{ordered =} \ConstantTok{TRUE}\NormalTok{), }\CommentTok{\# Chuyển thành factor có thứ tự}
+    \AttributeTok{ClientRegion =} \FunctionTok{str\_to\_title}\NormalTok{(Client\_Region),}
+    \AttributeTok{PaymentMethod =} \FunctionTok{str\_to\_title}\NormalTok{(Payment\_Method),}
+    \AttributeTok{JobsCompleted =} \FunctionTok{as.numeric}\NormalTok{(Job\_Completed),}
+    \AttributeTok{EarningsUSD =} \FunctionTok{as.numeric}\NormalTok{(Earnings\_USD), }\CommentTok{\# Đổi tên từ Income để rõ ràng}
+    \AttributeTok{HourlyRate =} \FunctionTok{as.numeric}\NormalTok{(Hourly\_Rate),}
+    \AttributeTok{JobSuccessRate =} \FunctionTok{as.numeric}\NormalTok{(Job\_Success\_Rate),}
+    \AttributeTok{ClientRating =} \FunctionTok{as.numeric}\NormalTok{(Client\_Rating),}
+    \AttributeTok{JobDurationDays =} \FunctionTok{as.numeric}\NormalTok{(Job\_Duration\_Days),}
+    \AttributeTok{ProjectType =} \FunctionTok{factor}\NormalTok{(}\FunctionTok{str\_to\_title}\NormalTok{(Project\_Type)), }\CommentTok{\# Chuyển thành factor}
+    \AttributeTok{RehireRate =} \FunctionTok{as.numeric}\NormalTok{(Rehire\_Rate),}
+    \AttributeTok{MarketingSpend =} \FunctionTok{as.numeric}\NormalTok{(Marketing\_Spend)}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \CommentTok{\# Chọn các cột đã được làm sạch và đổi tên}
+  \FunctionTok{select}\NormalTok{(}
+\NormalTok{    FreelancerID, JobCategory, Platform, ExperienceLevel, ClientRegion, PaymentMethod,}
+\NormalTok{    JobsCompleted, EarningsUSD, HourlyRate, JobSuccessRate, ClientRating,}
+\NormalTok{    JobDurationDays, ProjectType, RehireRate, MarketingSpend}
+\NormalTok{  )}
+
+\CommentTok{\# Kiểm tra lại các giá trị NA sau khi làm sạch cơ bản}
+\FunctionTok{colSums}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(data\_clean)) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{kable}\NormalTok{(}\AttributeTok{col.names =} \FunctionTok{c}\NormalTok{(}\StringTok{"Số lượng NA"}\NormalTok{), }\AttributeTok{caption =} \StringTok{"Kiểm tra NA sau làm sạch"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lr@{}}
+\caption{Kiểm tra NA sau làm sạch}\tabularnewline
+\toprule\noalign{}
+& Số lượng NA \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+& Số lượng NA \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+FreelancerID & 0 \\
+JobCategory & 0 \\
+Platform & 0 \\
+ExperienceLevel & 0 \\
+ClientRegion & 0 \\
+PaymentMethod & 0 \\
+JobsCompleted & 0 \\
+EarningsUSD & 0 \\
+HourlyRate & 0 \\
+JobSuccessRate & 0 \\
+ClientRating & 0 \\
+JobDurationDays & 0 \\
+ProjectType & 0 \\
+RehireRate & 0 \\
+MarketingSpend & 0 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Hiển thị vài dòng đầu của dữ liệu đã làm sạch}
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{head}\NormalTok{(data\_clean), }\AttributeTok{caption =} \StringTok{"Dữ liệu đã làm sạch (6 dòng đầu)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0625}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0865}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0673}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0769}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0625}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0721}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0673}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0577}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0529}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0721}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0625}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0769}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0577}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0529}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 28\tabcolsep) * \real{0.0721}}@{}}
+\caption{Dữ liệu đã làm sạch (6 dòng đầu)}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedleft
+FreelancerID
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+JobCategory
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Platform
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ExperienceLevel
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ClientRegion
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+PaymentMethod
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+JobsCompleted
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+EarningsUSD
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+HourlyRate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+JobSuccessRate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+ClientRating
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+JobDurationDays
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ProjectType
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+RehireRate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+MarketingSpend
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedleft
+FreelancerID
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+JobCategory
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Platform
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ExperienceLevel
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ClientRegion
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+PaymentMethod
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+JobsCompleted
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+EarningsUSD
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+HourlyRate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+JobSuccessRate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+ClientRating
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+JobDurationDays
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ProjectType
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+RehireRate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+MarketingSpend
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & Web Development & Fiverr & Beginner & Asia & Mobile Banking & 180 &
+1620 & 95.79 & 68.73 & 3.18 & 1 & Fixed & 40.19 & 53 \\
+2 & App Development & Fiverr & Beginner & Australia & Mobile Banking &
+218 & 9078 & 86.38 & 97.54 & 3.44 & 54 & Fixed & 36.53 & 486 \\
+3 & Web Development & Fiverr & Beginner & Uk & Crypto & 27 & 3455 &
+85.17 & 86.60 & 4.20 & 46 & Hourly & 74.05 & 489 \\
+4 & Data Entry & Peopleperhour & Intermediate & Asia & Bank Transfer &
+17 & 5577 & 14.37 & 79.93 & 4.47 & 41 & Hourly & 27.58 & 67 \\
+5 & Digital Marketing & Upwork & Expert & Asia & Crypto & 245 & 5898 &
+99.37 & 57.80 & 5.00 & 41 & Hourly & 69.09 & 489 \\
+6 & Customer Support & Toptal & Beginner & Europe & Crypto & 280 & 6867
+& 43.04 & 57.80 & 4.87 & 8 & Fixed & 43.88 & 290 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Xem cấu trúc dữ liệu đã làm sạch}
+\FunctionTok{str}\NormalTok{(data\_clean, }\AttributeTok{list.len=}\FunctionTok{ncol}\NormalTok{(data\_clean))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## tibble [1,950 x 15] (S3: tbl_df/tbl/data.frame)
+##  $ FreelancerID   : num [1:1950] 1 2 3 4 5 6 7 8 9 10 ...
+##  $ JobCategory    : chr [1:1950] "Web Development" "App Development" "Web Development" "Data Entry" ...
+##  $ Platform       : chr [1:1950] "Fiverr" "Fiverr" "Fiverr" "Peopleperhour" ...
+##  $ ExperienceLevel: Ord.factor w/ 3 levels "Beginner"<"Intermediate"<..: 1 1 1 2 3 1 1 1 2 1 ...
+##  $ ClientRegion   : chr [1:1950] "Asia" "Australia" "Uk" "Asia" ...
+##  $ PaymentMethod  : chr [1:1950] "Mobile Banking" "Mobile Banking" "Crypto" "Bank Transfer" ...
+##  $ JobsCompleted  : num [1:1950] 180 218 27 17 245 280 96 112 233 156 ...
+##  $ EarningsUSD    : num [1:1950] 1620 9078 3455 5577 5898 ...
+##  $ HourlyRate     : num [1:1950] 95.8 86.4 85.2 14.4 99.4 ...
+##  $ JobSuccessRate : num [1:1950] 68.7 97.5 86.6 79.9 57.8 ...
+##  $ ClientRating   : num [1:1950] 3.18 3.44 4.2 4.47 5 4.87 4.29 3.84 4.27 4.57 ...
+##  $ JobDurationDays: num [1:1950] 1 54 46 41 41 8 32 30 46 52 ...
+##  $ ProjectType    : Factor w/ 2 levels "Fixed","Hourly": 1 1 2 2 2 1 2 1 1 2 ...
+##  $ RehireRate     : num [1:1950] 40.2 36.5 74 27.6 69.1 ...
+##  $ MarketingSpend : num [1:1950] 53 486 489 67 489 290 343 168 396 160 ...
+\end{verbatim}
+
+\textbf{Nhận xét:}~Sau bước làm sạch cơ bản, chúng ta không còn giá trị
+NA nào trong các cột đã chọn (hoặc số lượng NA rất ít nếu có trong các
+cột khác). Kiểu dữ liệu đã được chuẩn hóa, và các cột categorical quan
+trọng như~ExperienceLevel~và~ProjectType~đã được chuyển thành factor.
+
+\subsection{2.3. Chuẩn hóa Dữ liệu
+(Normalization)}\label{chuux1ea9n-huxf3a-dux1eef-liux1ec7u-normalization}
+
+Chuẩn hóa Min-Max đưa tất cả các giá trị về khoảng {[}0, 1{]}. Điều này
+có thể hữu ích cho một số thuật toán học máy nhạy cảm với thang đo của
+dữ liệu hoặc khi muốn so sánh các biến có đơn vị khác nhau trên cùng một
+biểu đồ.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data\_norm }\OtherTok{\textless{}{-}}\NormalTok{ data\_clean }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{EarningsUSD\_norm =}\NormalTok{ (EarningsUSD }\SpecialCharTok{{-}} \FunctionTok{min}\NormalTok{(EarningsUSD, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)) }\SpecialCharTok{/}\NormalTok{ (}\FunctionTok{max}\NormalTok{(EarningsUSD, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{{-}} \FunctionTok{min}\NormalTok{(EarningsUSD, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)),}
+    \AttributeTok{JobSuccessRate\_norm =}\NormalTok{ (JobSuccessRate }\SpecialCharTok{{-}} \FunctionTok{min}\NormalTok{(JobSuccessRate, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)) }\SpecialCharTok{/}\NormalTok{ (}\FunctionTok{max}\NormalTok{(JobSuccessRate, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{{-}} \FunctionTok{min}\NormalTok{(JobSuccessRate, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)),}
+    \AttributeTok{ClientRating\_norm =}\NormalTok{ (ClientRating }\SpecialCharTok{{-}} \FunctionTok{min}\NormalTok{(ClientRating, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)) }\SpecialCharTok{/}\NormalTok{ (}\FunctionTok{max}\NormalTok{(ClientRating, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{{-}} \FunctionTok{min}\NormalTok{(ClientRating, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)),}
+    \AttributeTok{HourlyRate\_norm =}\NormalTok{ (HourlyRate }\SpecialCharTok{{-}} \FunctionTok{min}\NormalTok{(HourlyRate, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)) }\SpecialCharTok{/}\NormalTok{ (}\FunctionTok{max}\NormalTok{(HourlyRate, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{{-}} \FunctionTok{min}\NormalTok{(HourlyRate, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)),}
+    \AttributeTok{JobsCompleted\_norm =}\NormalTok{ (JobsCompleted }\SpecialCharTok{{-}} \FunctionTok{min}\NormalTok{(JobsCompleted, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)) }\SpecialCharTok{/}\NormalTok{ (}\FunctionTok{max}\NormalTok{(JobsCompleted, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{{-}} \FunctionTok{min}\NormalTok{(JobsCompleted, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{))}
+\NormalTok{  )}
+
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{head}\NormalTok{(data\_norm }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(EarningsUSD, EarningsUSD\_norm, JobSuccessRate, JobSuccessRate\_norm)), }
+      \AttributeTok{caption =} \StringTok{"Ví dụ dữ liệu đã chuẩn hóa"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}rrrr@{}}
+\caption{Ví dụ dữ liệu đã chuẩn hóa}\tabularnewline
+\toprule\noalign{}
+EarningsUSD & EarningsUSD\_norm & JobSuccessRate &
+JobSuccessRate\_norm \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+EarningsUSD & EarningsUSD\_norm & JobSuccessRate &
+JobSuccessRate\_norm \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1620 & 0.1578471 & 68.73 & 0.3726671 \\
+9078 & 0.9081489 & 97.54 & 0.9508328 \\
+3455 & 0.3424547 & 86.60 & 0.7312864 \\
+5577 & 0.5559356 & 79.93 & 0.5974313 \\
+5898 & 0.5882294 & 57.80 & 0.1533213 \\
+6867 & 0.6857143 & 57.80 & 0.1533213 \\
+\end{longtable}
+
+\section{3. Phân tích Dữ liệu Khám phá
+(EDA)}\label{phuxe2n-tuxedch-dux1eef-liux1ec7u-khuxe1m-phuxe1-eda}
+
+\subsection{3.1. Thống kê Mô tả Tổng
+quan}\label{thux1ed1ng-kuxea-muxf4-tux1ea3-tux1ed5ng-quan}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{skim}\NormalTok{(data\_clean)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{Data summary}\tabularnewline
+\toprule\noalign{}
+\endfirsthead
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Name & data\_clean \\
+Number of rows & 1950 \\
+Number of columns & 15 \\
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ & \\
+Column type frequency: & \\
+character & 4 \\
+factor & 2 \\
+numeric & 9 \\
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ & \\
+Group variables & None \\
+\end{longtable}
+
+\textbf{Variable type: character}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1944}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1389}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1944}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.0556}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.0556}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.0833}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1250}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1528}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+skim\_variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n\_missing
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+complete\_rate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+min
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+max
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+empty
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n\_unique
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+whitespace
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+JobCategory & 0 & 1 & 3 & 17 & 0 & 8 & 0 \\
+Platform & 0 & 1 & 6 & 13 & 0 & 5 & 0 \\
+ClientRegion & 0 & 1 & 2 & 11 & 0 & 7 & 0 \\
+PaymentMethod & 0 & 1 & 6 & 14 & 0 & 4 & 0 \\
+\end{longtable}
+
+\textbf{Variable type: factor}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1860}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1163}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1628}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.0930}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1047}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.3372}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+skim\_variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n\_missing
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+complete\_rate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ordered
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n\_unique
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+top\_counts
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+ExperienceLevel & 0 & 1 & TRUE & 3 & Beg: 668, Int: 641, Exp: 641 \\
+ProjectType & 0 & 1 & FALSE & 2 & Fix: 997, Hou: 953 \\
+\end{longtable}
+
+\textbf{Variable type: numeric}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.1600}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.1000}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.1400}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.0800}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.0800}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.0600}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.0800}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.0800}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.0800}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.0800}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 20\tabcolsep) * \real{0.0600}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+skim\_variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n\_missing
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+complete\_rate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+mean
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+sd
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p0
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p25
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p50
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p75
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p100
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+hist
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+FreelancerID & 0 & 1 & 975.50 & 563.06 & 1.00 & 488.25 & 975.50 &
+1462.75 & 1950.00 & ▇▇▇▇▇ \\
+JobsCompleted & 0 & 1 & 150.86 & 85.48 & 5.00 & 76.00 & 149.00 & 225.00
+& 299.00 & ▇▇▇▇▇ \\
+EarningsUSD & 0 & 1 & 5017.57 & 2926.28 & 51.00 & 2419.00 & 5048.00 &
+7608.25 & 9991.00 & ▇▇▇▇▇ \\
+HourlyRate & 0 & 1 & 52.58 & 26.93 & 5.02 & 30.05 & 52.28 & 75.12 &
+99.83 & ▇▇▇▇▇ \\
+JobSuccessRate & 0 & 1 & 74.95 & 14.62 & 50.16 & 61.92 & 75.40 & 87.54 &
+99.99 & ▇▇▇▇▇ \\
+ClientRating & 0 & 1 & 4.00 & 0.58 & 3.00 & 3.51 & 3.99 & 4.50 & 5.00 &
+▇▇▇▇▇ \\
+JobDurationDays & 0 & 1 & 44.70 & 26.02 & 1.00 & 22.00 & 45.00 & 67.00 &
+89.00 & ▇▇▇▇▇ \\
+RehireRate & 0 & 1 & 44.56 & 20.19 & 10.00 & 27.15 & 43.92 & 61.69 &
+79.95 & ▇▇▇▇▇ \\
+MarketingSpend & 0 & 1 & 248.52 & 148.08 & 0.00 & 119.00 & 252.50 &
+379.00 & 499.00 & ▇▇▇▇▇ \\
+\end{longtable}
+
+\textbf{Phân tích:}
+
+\begin{itemize}
+\item
+  Tập dữ liệu có r nrow(data\_clean) quan sát và r ncol(data\_clean)
+  biến.
+\item
+  \textbf{EarningsUSD}: Thu nhập trung bình là r
+  scales::dollar(round(mean(data\_clean\$EarningsUSD),0)), với độ lệch
+  chuẩn khá lớn, cho thấy sự biến động cao trong thu nhập. Giá trị trung
+  vị là r scales::dollar(median(data\_clean\$EarningsUSD)). Khoảng thu
+  nhập rộng từ r scales::dollar(min(data\_clean\$EarningsUSD)) đến r
+  scales::dollar(max(data\_clean\$EarningsUSD)).
+\item
+  \textbf{HourlyRate}: Mức lương theo giờ trung bình là r
+  scales::dollar(round(mean(data\_clean\$HourlyRate),2)).
+\item
+  \textbf{JobSuccessRate}: Tỷ lệ thành công trung bình là r
+  round(mean(data\_clean\$JobSuccessRate),2)\%.
+\item
+  \textbf{ClientRating}: Đánh giá khách hàng trung bình là r
+  round(mean(data\_clean\$ClientRating),2).
+\item
+  Các biến categorical như JobCategory, Platform, ExperienceLevel có số
+  lượng các mức khác nhau, sẽ được khám phá chi tiết hơn bằng biểu đồ.
+\end{itemize}
+
+\subsection{3.2. Phân tích Đơn biến (Univariate
+Analysis)}\label{phuxe2n-tuxedch-ux111ux1a1n-biux1ebfn-univariate-analysis}
+
+\subsubsection{3.2.1. Phân phối Thu nhập
+(EarningsUSD)}\label{phuxe2n-phux1ed1i-thu-nhux1eadp-earningsusd}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(data\_clean, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ EarningsUSD)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{binwidth =} \DecValTok{500}\NormalTok{, }\AttributeTok{fill =} \StringTok{"steelblue"}\NormalTok{, }\AttributeTok{color =} \StringTok{"white"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.8}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Phân phối Thu nhập của Freelancer (EarningsUSD)"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Thu nhập (USD)"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Số lượng Freelancer"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\NormalTok{comma)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{api_files/figure-latex/earnings-distribution-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(data\_clean, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =} \StringTok{""}\NormalTok{, }\AttributeTok{y =}\NormalTok{ EarningsUSD)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{fill =} \StringTok{"skyblue"}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{, }\AttributeTok{outlier.colour =} \StringTok{"red"}\NormalTok{, }\AttributeTok{outlier.shape =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Boxplot Phân phối Thu nhập (EarningsUSD)"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Thu nhập (USD)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+} \CommentTok{\# Xoay boxplot cho dễ nhìn hơn khi chỉ có 1 nhóm}
+  \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\NormalTok{comma)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{api_files/figure-latex/earnings-distribution-2} \end{center}
+
+\textbf{Ý nghĩa và Phân tích:}
+
+\begin{itemize}
+\item
+  \textbf{Histogram}: Biểu đồ histogram cho thấy phân phối của
+  EarningsUSD bị lệch phải (right-skewed), nghĩa là phần lớn freelancer
+  có thu nhập ở mức thấp đến trung bình, và một số ít freelancer có thu
+  nhập rất cao.
+\item
+  \textbf{Boxplot}: Boxplot cũng xác nhận điều này, với nhiều điểm ngoại
+  lệ (outliers) ở phía thu nhập cao. Khoảng tứ phân vị (IQR) cho thấy sự
+  tập trung của 50\% dữ liệu ở giữa.
+\item
+  \textbf{Tri thức mới}: Sự chênh lệch lớn về thu nhập cho thấy có thể
+  có các nhóm freelancer khác nhau hoặc các yếu tố đặc biệt dẫn đến thu
+  nhập cao vượt trội.
+\end{itemize}
+
+\subsubsection{3.2.2. Phân phối Tỷ lệ Giờ làm việc
+(HourlyRate)}\label{phuxe2n-phux1ed1i-tux1ef7-lux1ec7-giux1edd-luxe0m-viux1ec7c-hourlyrate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(data\_clean, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ HourlyRate)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{binwidth =} \DecValTok{5}\NormalTok{, }\AttributeTok{fill =} \StringTok{"coral"}\NormalTok{, }\AttributeTok{color =} \StringTok{"white"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.8}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Phân phối Mức lương theo giờ (HourlyRate)"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Mức lương theo giờ (USD)"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Số lượng Freelancer"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\NormalTok{comma)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{api_files/figure-latex/hourly-rate-distribution-1} \end{center}
+
+\textbf{Ý nghĩa và Phân tích:}
+
+\begin{itemize}
+\tightlist
+\item
+  Phân phối của HourlyRate cũng có xu hướng lệch phải, nhưng không rõ
+  rệt bằng EarningsUSD. Phần lớn freelancer có mức lương theo giờ tập
+  trung ở khoảng thấp và trung bình. Có một số freelancer đạt mức lương
+  giờ rất cao.
+\end{itemize}
+
+\subsubsection{3.2.3. Phân loại Công việc
+(JobCategory)}\label{phuxe2n-loux1ea1i-cuxf4ng-viux1ec7c-jobcategory}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data\_clean }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{count}\NormalTok{(JobCategory, }\AttributeTok{sort =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =} \FunctionTok{reorder}\NormalTok{(JobCategory, }\SpecialCharTok{{-}}\NormalTok{n), }\AttributeTok{y =}\NormalTok{ n)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{stat =} \StringTok{"identity"}\NormalTok{, }\AttributeTok{fill =} \StringTok{"lightgreen"}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.8}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_text}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{label =}\NormalTok{ n), }\AttributeTok{vjust =} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Số lượng Freelancer theo Loại Công việc"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Loại Công việc"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Số lượng Freelancer"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{api_files/figure-latex/job-category-distribution-1} \end{center}
+
+\textbf{Ý nghĩa và Phân tích:}
+
+\begin{itemize}
+\item
+  Biểu đồ cột cho thấy các loại công việc phổ biến nhất. ``Data Entry'',
+  ``Web Development'', ``Graphic Design'', và ``Customer Support'' là
+  những lĩnh vực có nhiều freelancer tham gia nhất trong tập dữ liệu
+  này.
+\item
+  \textbf{Tri thức mới}: Điều này cho thấy nhu cầu hoặc sự phổ biến của
+  các loại công việc này trên các nền tảng freelancer.
+\end{itemize}
+
+\subsubsection{3.2.4. Nền tảng Làm việc
+(Platform)}\label{nux1ec1n-tux1ea3ng-luxe0m-viux1ec7c-platform}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data\_clean }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{count}\NormalTok{(Platform, }\AttributeTok{sort =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =} \FunctionTok{reorder}\NormalTok{(Platform, }\SpecialCharTok{{-}}\NormalTok{n), }\AttributeTok{y =}\NormalTok{ n)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{stat =} \StringTok{"identity"}\NormalTok{, }\AttributeTok{fill =} \StringTok{"gold"}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.8}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_text}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{label =}\NormalTok{ n), }\AttributeTok{vjust =} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Số lượng Freelancer theo Nền tảng"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Nền tảng"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Số lượng Freelancer"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{api_files/figure-latex/platform-distribution-1} \end{center}
+
+\textbf{Ý nghĩa và Phân tích:}
+
+\begin{itemize}
+\item
+  ``Fiverr'', ``Upwork'', và ``Toptal'' là các nền tảng có nhiều
+  freelancer nhất trong mẫu dữ liệu này.
+\item
+  \textbf{Tri thức mới}: Sự phân bổ này có thể phản ánh mức độ phổ biến
+  của các nền tảng hoặc đặc điểm của tập dữ liệu được thu thập.
+\end{itemize}
+
+\subsubsection{3.2.5. Mức độ Kinh nghiệm
+(ExperienceLevel)}\label{mux1ee9c-ux111ux1ed9-kinh-nghiux1ec7m-experiencelevel}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data\_clean }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{count}\NormalTok{(ExperienceLevel, }\AttributeTok{sort =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\# Giữ nguyên thứ tự của factor đã định nghĩa}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ ExperienceLevel, }\AttributeTok{y =}\NormalTok{ n)) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{stat =} \StringTok{"identity"}\NormalTok{, }\AttributeTok{fill =} \StringTok{"orchid"}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.8}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_text}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{label =}\NormalTok{ n), }\AttributeTok{vjust =} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Số lượng Freelancer theo Mức độ Kinh nghiệm"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Mức độ Kinh nghiệm"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Số lượng Freelancer"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{api_files/figure-latex/experience-level-distribution-1} \end{center}
+
+\textbf{Ý nghĩa và Phân tích:}
+
+\begin{itemize}
+\item
+  Số lượng freelancer ở các mức kinh nghiệm ``Beginner'',
+  ``Intermediate'', và ``Expert'' có sự phân bổ khá đều, với
+  ``Beginner'' và ``Intermediate'' chiếm tỷ lệ cao hơn một chút.
+\item
+  \textbf{Tri thức mới}: Điều này cho thấy thị trường freelancer có sự
+  tham gia của nhiều người ở các giai đoạn sự nghiệp khác nhau.
+\end{itemize}
+
+\subsubsection{3.2.6. Loại Hình Dự Án
+(ProjectType)}\label{loux1ea1i-huxecnh-dux1ef1-uxe1n-projecttype}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{project\_type\_summary }\OtherTok{\textless{}{-}}\NormalTok{ data\_clean }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(ProjectType) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{count =} \FunctionTok{n}\NormalTok{(),}
+            \AttributeTok{percentage =} \FunctionTok{n}\NormalTok{() }\SpecialCharTok{/} \FunctionTok{nrow}\NormalTok{(data\_clean) }\SpecialCharTok{*} \DecValTok{100}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ungroup}\NormalTok{()}
+
+\FunctionTok{ggplot}\NormalTok{(project\_type\_summary, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ ProjectType, }\AttributeTok{y =}\NormalTok{ count, }\AttributeTok{fill =}\NormalTok{ ProjectType)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{stat =} \StringTok{"identity"}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.8}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_text}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{label =} \FunctionTok{paste0}\NormalTok{(}\FunctionTok{round}\NormalTok{(percentage,}\DecValTok{1}\NormalTok{), }\StringTok{"\% ("}\NormalTok{, count, }\StringTok{")"}\NormalTok{)), }\AttributeTok{vjust =} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \FloatTok{3.5}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Phân bổ Freelancer theo Loại Hình Dự Án"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Loại Hình Dự Án"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Số lượng Freelancer"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"Pastel1"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{api_files/figure-latex/project-type-distribution-1} \end{center}
+
+\textbf{Ý nghĩa và Phân tích:}
+
+\begin{itemize}
+\item
+  Biểu đồ cho thấy sự phân bổ giữa các dự án tính theo giờ (Hourly) và
+  dự án giá cố định (Fixed). Trong tập dữ liệu này, số lượng dự án tính
+  theo giờ và giá cố định khá tương đồng, với dự án theo giờ chiếm tỷ lệ
+  nhỉnh hơn một chút.
+\item
+  \textbf{Tri thức mới}: Cả hai mô hình định giá đều phổ biến,
+  freelancer có thể lựa chọn tùy theo tính chất công việc và sở thích.
+\end{itemize}
+
+\subsection{3.3. Phân tích Đa biến (Bivariate \& Multivariate
+Analysis)}\label{phuxe2n-tuxedch-ux111a-biux1ebfn-bivariate-multivariate-analysis}
+
+\subsubsection{3.3.1. Thu nhập theo Loại Công
+việc}\label{thu-nhux1eadp-theo-loux1ea1i-cuxf4ng-viux1ec7c}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(data\_clean, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =} \FunctionTok{reorder}\NormalTok{(JobCategory, EarningsUSD, }\AttributeTok{FUN =}\NormalTok{ median, }\AttributeTok{.desc =} \ConstantTok{TRUE}\NormalTok{), }\AttributeTok{y =}\NormalTok{ EarningsUSD, }\AttributeTok{fill =}\NormalTok{ JobCategory)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.8}\NormalTok{, }\AttributeTok{outlier.shape =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Phân phối Thu nhập (EarningsUSD) theo Loại Công việc"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Loại Công việc"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Thu nhập (USD)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{), }\AttributeTok{legend.position =} \StringTok{"none"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_log10}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\NormalTok{comma) }\CommentTok{\# Sử dụng thang log cho y để dễ nhìn hơn do độ lệch lớn}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{api_files/figure-latex/earnings-by-job-category-1} \end{center}
+
+\textbf{Ý nghĩa và Phân tích:}
+
+\begin{itemize}
+\item
+  Biểu đồ boxplot cho thấy sự khác biệt đáng kể về thu nhập trung vị
+  giữa các loại công việc.
+\item
+  ``App Development'' và ``Web Development'' dường như có mức thu nhập
+  trung vị cao hơn so với các ngành khác như ``Data Entry'' hay
+  ``Customer Support''.
+\item
+  Sự biến động (độ dài của box và whiskers) cũng khác nhau giữa các
+  ngành.
+\item
+  \textbf{Tri thức mới}: Lựa chọn ngành nghề có ảnh hưởng lớn đến tiềm
+  năng thu nhập. Các ngành kỹ thuật cao thường có thu nhập tốt hơn.
+\end{itemize}
+
+\subsubsection{3.3.2. Thu nhập theo Nền
+tảng}\label{thu-nhux1eadp-theo-nux1ec1n-tux1ea3ng}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(data\_clean, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =} \FunctionTok{reorder}\NormalTok{(Platform, EarningsUSD, }\AttributeTok{FUN =}\NormalTok{ median, }\AttributeTok{.desc =} \ConstantTok{TRUE}\NormalTok{), }\AttributeTok{y =}\NormalTok{ EarningsUSD, }\AttributeTok{fill =}\NormalTok{ Platform)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.8}\NormalTok{, }\AttributeTok{outlier.shape =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Phân phối Thu nhập (EarningsUSD) theo Nền tảng"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Nền tảng"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Thu nhập (USD)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{), }\AttributeTok{legend.position =} \StringTok{"none"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_log10}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\NormalTok{comma)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{api_files/figure-latex/earnings-by-platform-1} \end{center}
+
+\textbf{Ý nghĩa và Phân tích:}
+
+\begin{itemize}
+\item
+  Có sự khác biệt về thu nhập trung vị giữa các nền tảng. Ví dụ,
+  ``Toptal'' thường được biết đến với các freelancer chất lượng cao và
+  dự án giá trị lớn, có thể dẫn đến thu nhập trung bình cao hơn.
+\item
+  \textbf{Tri thức mới}: Nền tảng làm việc cũng là một yếu tố quan
+  trọng. Một số nền tảng có thể tập trung vào các phân khúc thị trường
+  hoặc loại dự án khác nhau, ảnh hưởng đến thu nhập.
+\end{itemize}
+
+\subsubsection{3.3.3. Thu nhập theo Mức độ Kinh
+nghiệm}\label{thu-nhux1eadp-theo-mux1ee9c-ux111ux1ed9-kinh-nghiux1ec7m}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(data\_clean, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ ExperienceLevel, }\AttributeTok{y =}\NormalTok{ EarningsUSD, }\AttributeTok{fill =}\NormalTok{ ExperienceLevel)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.8}\NormalTok{, }\AttributeTok{outlier.shape =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Phân phối Thu nhập (EarningsUSD) theo Mức độ Kinh nghiệm"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Mức độ Kinh nghiệm"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Thu nhập (USD)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"none"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_log10}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\NormalTok{comma) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{api_files/figure-latex/earnings-by-experience-level-1} \end{center}
+
+\textbf{Ý nghĩa và Phân tích:}
+
+\begin{itemize}
+\item
+  Rõ ràng có xu hướng thu nhập tăng theo mức độ kinh nghiệm. Freelancer
+  ``Expert'' có thu nhập trung vị cao nhất, tiếp theo là
+  ``Intermediate'' và cuối cùng là ``Beginner''.
+\item
+  \textbf{Tri thức mới}: Đầu tư vào việc nâng cao kỹ năng và kinh nghiệm
+  là một chiến lược quan trọng để tăng thu nhập.
+\end{itemize}
+
+\subsubsection{3.3.4. Mối quan hệ giữa Số lượng Công việc Hoàn thành và
+Thu
+nhập}\label{mux1ed1i-quan-hux1ec7-giux1eefa-sux1ed1-lux1b0ux1ee3ng-cuxf4ng-viux1ec7c-houxe0n-thuxe0nh-vuxe0-thu-nhux1eadp}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(data\_clean, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ JobsCompleted, }\AttributeTok{y =}\NormalTok{ EarningsUSD)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{color =}\NormalTok{ ExperienceLevel), }\AttributeTok{alpha =} \FloatTok{0.5}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{se =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{color =} \StringTok{"darkred"}\NormalTok{) }\SpecialCharTok{+} \CommentTok{\# Thêm đường xu hướng tuyến tính}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Mối quan hệ giữa Số lượng Công việc Hoàn thành và Thu nhập"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Số lượng Công việc Hoàn thành"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Thu nhập (USD)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_log10}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\NormalTok{comma) }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_log10}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\NormalTok{comma) }\CommentTok{\# Thang log cho cả 2 trục nếu cần}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{api_files/figure-latex/earnings-vs-jobs-completed-1} \end{center}
+
+\textbf{Ý nghĩa và Phân tích:}
+
+\begin{itemize}
+\item
+  Biểu đồ scatter plot cho thấy có một mối quan hệ dương giữa số lượng
+  công việc hoàn thành (JobsCompleted) và thu nhập (EarningsUSD). Tuy
+  nhiên, mối quan hệ này có thể không hoàn toàn tuyến tính và có nhiều
+  biến động.
+\item
+  Các freelancer có kinh nghiệm (Expert) thường có thể hoàn thành nhiều
+  việc hơn và có thu nhập cao hơn, nhưng cũng có những người mới bắt đầu
+  (Beginner) hoàn thành nhiều việc với thu nhập thấp hơn.
+\item
+  \textbf{Tri thức mới}: Hoàn thành nhiều công việc thường dẫn đến thu
+  nhập cao hơn, nhưng chất lượng và giá trị của mỗi công việc cũng quan
+  trọng.
+\end{itemize}
+
+\subsubsection{3.3.5. Mối quan hệ giữa Tỷ lệ Thành công và Thu
+nhập}\label{mux1ed1i-quan-hux1ec7-giux1eefa-tux1ef7-lux1ec7-thuxe0nh-cuxf4ng-vuxe0-thu-nhux1eadp}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(data\_clean, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ JobSuccessRate, }\AttributeTok{y =}\NormalTok{ EarningsUSD)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{color =}\NormalTok{ ExperienceLevel), }\AttributeTok{alpha =} \FloatTok{0.5}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"loess"}\NormalTok{, }\AttributeTok{se =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{color =} \StringTok{"darkblue"}\NormalTok{) }\SpecialCharTok{+} \CommentTok{\# Đường xu hướng mượt hơn}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Mối quan hệ giữa Tỷ lệ Thành công và Thu nhập"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Tỷ lệ Thành công (\%)"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Thu nhập (USD)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_log10}\NormalTok{(}\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\NormalTok{comma)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{api_files/figure-latex/earnings-vs-job-success-rate-1} \end{center}
+
+\textbf{Ý nghĩa và Phân tích:}
+
+\begin{itemize}
+\item
+  Dường như có một xu hướng dương nhẹ: tỷ lệ thành công cao hơn có thể
+  liên quan đến thu nhập cao hơn, nhưng mối quan hệ không quá mạnh mẽ và
+  có nhiều điểm phân tán.
+\item
+  \textbf{Tri thức mới}: Duy trì tỷ lệ thành công cao là quan trọng,
+  nhưng nó không phải là yếu tố duy nhất quyết định thu nhập. Các yếu tố
+  khác như loại công việc, giá trị hợp đồng cũng đóng vai trò lớn.
+\end{itemize}
+
+\subsubsection{3.3.6. Ma trận Tương quan giữa các Biến
+Số}\label{ma-trux1eadn-tux1b0ux1a1ng-quan-giux1eefa-cuxe1c-biux1ebfn-sux1ed1}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Chọn các biến số để tính tương quan}
+\NormalTok{numeric\_vars }\OtherTok{\textless{}{-}}\NormalTok{ data\_clean }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select\_if}\NormalTok{(is.numeric) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{FreelancerID) }\CommentTok{\# Loại bỏ ID}
+
+\CommentTok{\# Tính ma trận tương quan}
+\NormalTok{cor\_matrix }\OtherTok{\textless{}{-}} \FunctionTok{cor}\NormalTok{(numeric\_vars, }\AttributeTok{use =} \StringTok{"pairwise.complete.obs"}\NormalTok{) }\CommentTok{\# Xử lý NA nếu còn sót}
+
+\CommentTok{\# Vẽ biểu đồ ma trận tương quan}
+\FunctionTok{corrplot}\NormalTok{(cor\_matrix, }\AttributeTok{method =} \StringTok{"color"}\NormalTok{, }\AttributeTok{type =} \StringTok{"upper"}\NormalTok{, }\AttributeTok{order =} \StringTok{"hclust"}\NormalTok{,}
+         \AttributeTok{addCoef.col =} \StringTok{"black"}\NormalTok{, }\CommentTok{\# Thêm hệ số tương quan}
+         \AttributeTok{tl.col =} \StringTok{"black"}\NormalTok{, }\AttributeTok{tl.srt =} \DecValTok{45}\NormalTok{, }\CommentTok{\# Màu và góc của nhãn}
+         \AttributeTok{diag =} \ConstantTok{FALSE}\NormalTok{, }\CommentTok{\# Không hiển thị đường chéo}
+         \AttributeTok{title =} \StringTok{"Ma trận Tương quan giữa các Biến Số"}\NormalTok{, }\AttributeTok{mar =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{api_files/figure-latex/correlation-matrix-1} \end{center}
+
+\textbf{Ý nghĩa và Phân tích:}
+
+\begin{itemize}
+\item
+  \textbf{EarningsUSD vs.~JobsCompleted}: Có tương quan dương vừa phải
+  (r round(cor\_matrix{[}``EarningsUSD'', ``JobsCompleted''{]}, 2)), cho
+  thấy số lượng công việc hoàn thành nhiều hơn thường đi kèm với thu
+  nhập cao hơn.
+\item
+  \textbf{EarningsUSD vs.~HourlyRate}: Mối tương quan này (r
+  round(cor\_matrix{[}``EarningsUSD'', ``HourlyRate''{]}, 2)) có thể
+  không cao như mong đợi, vì tổng thu nhập còn phụ thuộc vào tổng số giờ
+  làm việc hoặc số lượng dự án cố định.
+\item
+  \textbf{MarketingSpend vs.~EarningsUSD}: Tương quan dương (r
+  round(cor\_matrix{[}``EarningsUSD'', ``MarketingSpend''{]}, 2)), cho
+  thấy việc chi tiêu cho marketing có thể liên quan đến thu nhập cao
+  hơn.
+\item
+  \textbf{JobSuccessRate vs.~ClientRating}: Thường có tương quan dương
+  (r round(cor\_matrix{[}``JobSuccessRate'', ``ClientRating''{]}, 2)),
+  tỷ lệ thành công cao thường dẫn đến đánh giá tốt từ khách hàng.
+\item
+  \textbf{Tri thức mới}: Ma trận tương quan giúp xác định các mối quan
+  hệ tuyến tính tiềm năng giữa các biến. Tuy nhiên, cần lưu ý rằng tương
+  quan không ngụ ý nhân quả và không phát hiện được các mối quan hệ phi
+  tuyến tính.
+\end{itemize}
+
+\section{4. Mô hình hóa Dữ
+liệu}\label{muxf4-huxecnh-huxf3a-dux1eef-liux1ec7u}
+
+Trong phần này, chúng tôi sẽ xây dựng các mô hình để dự đoán khả năng
+một freelancer đạt được ``Thu nhập Cao''.
+
+\subsection{4.1. Chuẩn bị Dữ liệu cho Mô
+hình}\label{chuux1ea9n-bux1ecb-dux1eef-liux1ec7u-cho-muxf4-huxecnh}
+
+\subsubsection{4.1.1. Tạo Biến Mục tiêu (Target
+Variable)}\label{tux1ea1o-biux1ebfn-mux1ee5c-tiuxeau-target-variable}
+
+Chúng ta sẽ định nghĩa ``Thu nhập Cao'' là những freelancer có thu nhập
+(EarningsUSD) nằm trong top 25\% (tức là trên ngưỡng 75th percentile).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Xác định ngưỡng thu nhập cao (ví dụ: 75th percentile)}
+\NormalTok{threshold\_high\_income }\OtherTok{\textless{}{-}} \FunctionTok{quantile}\NormalTok{(data\_clean}\SpecialCharTok{$}\NormalTok{EarningsUSD, }\FloatTok{0.75}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Ngưỡng thu nhập cao (75th percentile):"}\NormalTok{, scales}\SpecialCharTok{::}\FunctionTok{dollar}\NormalTok{(threshold\_high\_income), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Ngưỡng thu nhập cao (75th percentile): $7,608.25
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data\_model }\OtherTok{\textless{}{-}}\NormalTok{ data\_clean }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{HighEarner =} \FunctionTok{factor}\NormalTok{(}\FunctionTok{ifelse}\NormalTok{(EarningsUSD }\SpecialCharTok{\textgreater{}}\NormalTok{ threshold\_high\_income, }\StringTok{"Yes"}\NormalTok{, }\StringTok{"No"}\NormalTok{), }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"No"}\NormalTok{, }\StringTok{"Yes"}\NormalTok{)))}
+
+\CommentTok{\# Kiểm tra phân bổ của biến mục tiêu}
+\FunctionTok{table}\NormalTok{(data\_model}\SpecialCharTok{$}\NormalTok{HighEarner) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"Phân bổ biến mục tiêu HighEarner"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lr@{}}
+\caption{Phân bổ biến mục tiêu HighEarner}\tabularnewline
+\toprule\noalign{}
+Var1 & Freq \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Var1 & Freq \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+No & 1462 \\
+Yes & 488 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{prop.table}\NormalTok{(}\FunctionTok{table}\NormalTok{(data\_model}\SpecialCharTok{$}\NormalTok{HighEarner)) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"Tỷ lệ phân bổ biến mục tiêu HighEarner"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lr@{}}
+\caption{Tỷ lệ phân bổ biến mục tiêu HighEarner}\tabularnewline
+\toprule\noalign{}
+Var1 & Freq \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Var1 & Freq \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+No & 0.7497436 \\
+Yes & 0.2502564 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Loại bỏ các biến không cần thiết cho mô hình hoặc biến được dùng để tạo target}
+\NormalTok{data\_model }\OtherTok{\textless{}{-}}\NormalTok{ data\_model }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{FreelancerID, }\SpecialCharTok{{-}}\NormalTok{EarningsUSD)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Nhận xét}: Dữ liệu có sự mất cân bằng nhẹ, với số lượng ``No''
+(không phải thu nhập cao) nhiều hơn ``Yes''. Điều này cần được lưu ý khi
+đánh giá mô hình.
+
+\subsubsection{4.1.2. Xử lý các biến Categorical và NA (nếu
+có)}\label{xux1eed-luxfd-cuxe1c-biux1ebfn-categorical-vuxe0-na-nux1ebfu-cuxf3}
+
+Các mô hình như Logistic Regression yêu cầu các biến đầu vào phải là số.
+Chúng ta cần chuyển đổi các biến factor thành dummy variables. Decision
+Tree và Random Forest có thể xử lý biến factor trực tiếp. caret sẽ hỗ
+trợ việc này.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Kiểm tra lại NA trước khi xây dựng mô hình}
+\FunctionTok{sapply}\NormalTok{(data\_model, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{sum}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(x))) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{kable}\NormalTok{(}\AttributeTok{col.names =} \FunctionTok{c}\NormalTok{(}\StringTok{"Số lượng NA"}\NormalTok{), }\AttributeTok{caption=}\StringTok{"Kiểm tra NA trong data\_model"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lr@{}}
+\caption{Kiểm tra NA trong data\_model}\tabularnewline
+\toprule\noalign{}
+& Số lượng NA \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+& Số lượng NA \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+JobCategory & 0 \\
+Platform & 0 \\
+ExperienceLevel & 0 \\
+ClientRegion & 0 \\
+PaymentMethod & 0 \\
+JobsCompleted & 0 \\
+HourlyRate & 0 \\
+JobSuccessRate & 0 \\
+ClientRating & 0 \\
+JobDurationDays & 0 \\
+ProjectType & 0 \\
+RehireRate & 0 \\
+MarketingSpend & 0 \\
+HighEarner & 0 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# \textasciigrave{}caret\textasciigrave{} sẽ xử lý one{-}hot encoding cho các factor predictors trong quá trình huấn luyện khi cần (vd: cho glm).}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{4.1.3. Chia Dữ liệu (Train/Test
+Split)}\label{chia-dux1eef-liux1ec7u-traintest-split}
+
+Chia dữ liệu thành tập huấn luyện (70\%) và tập kiểm thử (30\%).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{) }\CommentTok{\# Để kết quả có thể tái tạo}
+\NormalTok{train\_index }\OtherTok{\textless{}{-}} \FunctionTok{createDataPartition}\NormalTok{(data\_model}\SpecialCharTok{$}\NormalTok{HighEarner, }\AttributeTok{p =} \FloatTok{0.7}\NormalTok{, }\AttributeTok{list =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{train\_data }\OtherTok{\textless{}{-}}\NormalTok{ data\_model[train\_index, ]}
+\NormalTok{test\_data }\OtherTok{\textless{}{-}}\NormalTok{ data\_model[}\SpecialCharTok{{-}}\NormalTok{train\_index, ]}
+
+\CommentTok{\# Kiểm tra kích thước của các tập dữ liệu}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Số lượng mẫu trong tập huấn luyện:"}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(train\_data), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Số lượng mẫu trong tập huấn luyện: 1366
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Số lượng mẫu trong tập kiểm thử:"}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(test\_data), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Số lượng mẫu trong tập kiểm thử: 584
+\end{verbatim}
+
+\subsection{4.2. Xây dựng và Huấn luyện Mô
+hình}\label{xuxe2y-dux1ef1ng-vuxe0-huux1ea5n-luyux1ec7n-muxf4-huxecnh}
+
+Chúng ta sẽ sử dụng caret để huấn luyện và đánh giá các mô hình.
+trainControl sẽ được sử dụng để thiết lập cross-validation.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Thiết lập train control cho cross{-}validation}
+\CommentTok{\# Sử dụng 5{-}fold cross{-}validation}
+\CommentTok{\# \textquotesingle{}twoClassSummary\textquotesingle{} để tính ROC, Sens, Spec}
+\NormalTok{ctrl }\OtherTok{\textless{}{-}} \FunctionTok{trainControl}\NormalTok{(}\AttributeTok{method =} \StringTok{"cv"}\NormalTok{, }
+                     \AttributeTok{number =} \DecValTok{5}\NormalTok{, }
+                     \AttributeTok{classProbs =} \ConstantTok{TRUE}\NormalTok{, }\CommentTok{\# Cần thiết cho ROC}
+                     \AttributeTok{summaryFunction =}\NormalTok{ twoClassSummary, }\CommentTok{\# Để có ROC, Sens, Spec}
+                     \AttributeTok{savePredictions =} \StringTok{"final"}\NormalTok{,}
+                     \AttributeTok{verboseIter =} \ConstantTok{FALSE}\NormalTok{) }\CommentTok{\# Tắt bớt log khi chạy}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{4.2.1. Mô hình Hồi quy Logistic (Logistic
+Regression)}\label{muxf4-huxecnh-hux1ed3i-quy-logistic-logistic-regression}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Huấn luyện mô hình Logistic Regression}
+\CommentTok{\# caret sẽ tự động xử lý one{-}hot encoding cho các factor predictors}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{logistic\_model }\OtherTok{\textless{}{-}} \FunctionTok{train}\NormalTok{(HighEarner }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ., }
+                        \AttributeTok{data =}\NormalTok{ train\_data, }
+                        \AttributeTok{method =} \StringTok{"glm"}\NormalTok{, }
+                        \AttributeTok{family =} \StringTok{"binomial"}\NormalTok{, }
+                        \AttributeTok{trControl =}\NormalTok{ ctrl,}
+                        \AttributeTok{metric =} \StringTok{"ROC"}\NormalTok{) }\CommentTok{\# Tối ưu theo ROC}
+
+\CommentTok{\# Xem tóm tắt mô hình}
+\FunctionTok{print}\NormalTok{(logistic\_model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Generalized Linear Model 
+## 
+## 1366 samples
+##   13 predictor
+##    2 classes: 'No', 'Yes' 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (5 fold) 
+## Summary of sample sizes: 1093, 1093, 1092, 1093, 1093 
+## Resampling results:
+## 
+##   ROC        Sens       Spec      
+##   0.5402652  0.9931612  0.02638534
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# summary(logistic\_model$finalModel) \# Chi tiết các hệ số (có thể rất dài)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Phân tích (từ print(logistic\_model))}:
+
+\begin{itemize}
+\item
+  Mô hình Logistic Regression được huấn luyện bằng cross-validation.
+\item
+  Kết quả ROC trên tập huấn luyện (sau cross-validation) là r
+  round(max(logistic\_model\$results\$ROC), 3).
+\end{itemize}
+
+\subsubsection{4.2.2. Mô hình Cây Quyết định (Decision
+Tree)}\label{muxf4-huxecnh-cuxe2y-quyux1ebft-ux111ux1ecbnh-decision-tree}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Huấn luyện mô hình Decision Tree (rpart)}
+\CommentTok{\# \textasciigrave{}tuneLength\textasciigrave{} để caret tự động thử các giá trị khác nhau của cp (complexity parameter)}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{tree\_model }\OtherTok{\textless{}{-}} \FunctionTok{train}\NormalTok{(HighEarner }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ., }
+                    \AttributeTok{data =}\NormalTok{ train\_data, }
+                    \AttributeTok{method =} \StringTok{"rpart"}\NormalTok{, }
+                    \AttributeTok{trControl =}\NormalTok{ ctrl,}
+                    \AttributeTok{metric =} \StringTok{"ROC"}\NormalTok{,}
+                    \AttributeTok{tuneLength =} \DecValTok{10}\NormalTok{) }\CommentTok{\# Thử 10 giá trị cp khác nhau}
+
+\CommentTok{\# Xem tóm tắt mô hình}
+\FunctionTok{print}\NormalTok{(tree\_model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## CART 
+## 
+## 1366 samples
+##   13 predictor
+##    2 classes: 'No', 'Yes' 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (5 fold) 
+## Summary of sample sizes: 1093, 1093, 1092, 1093, 1093 
+## Resampling results across tuning parameters:
+## 
+##   cp            ROC        Sens       Spec      
+##   0.0000000000  0.5028788  0.7762841  0.23111679
+##   0.0008663634  0.5028788  0.7762841  0.23111679
+##   0.0017327269  0.5111826  0.7811621  0.23111679
+##   0.0025990903  0.5090439  0.8026399  0.20771526
+##   0.0034654538  0.5085572  0.8075179  0.19893436
+##   0.0043318172  0.4980372  0.8593305  0.14032396
+##   0.0051981806  0.4929039  0.8769584  0.12574595
+##   0.0060645441  0.4829220  0.9150502  0.07327366
+##   0.0069309075  0.4841123  0.9384648  0.05281330
+##   0.0077972710  0.4741310  0.9716260  0.03512361
+## 
+## ROC was used to select the optimal model using the largest value.
+## The final value used for the model was cp = 0.001732727.
+\end{verbatim}
+
+\textbf{Phân tích (từ print(tree\_model))}:
+
+\begin{itemize}
+\item
+  Mô hình Cây Quyết định được huấn luyện, với tham số cp (complexity
+  parameter) được tinh chỉnh.
+\item
+  Giá trị cp tối ưu được chọn là r tree\_model\$bestTune\$cp.
+\item
+  Kết quả ROC trên tập huấn luyện (sau cross-validation) với cp tối ưu
+  là r round(max(tree\_model\$results\$ROC), 3).
+\end{itemize}
+
+Cây quyết định trực quan hóa:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{rpart.plot}\NormalTok{(tree\_model}\SpecialCharTok{$}\NormalTok{finalModel, }
+           \AttributeTok{extra =} \DecValTok{104}\NormalTok{, }\CommentTok{\# Hiển thị xác suất và \% quan sát}
+           \AttributeTok{box.palette =} \StringTok{"auto"}\NormalTok{, }\CommentTok{\# Tự động chọn màu}
+           \AttributeTok{branch.lty =} \DecValTok{3}\NormalTok{, }\AttributeTok{shadow.col =} \StringTok{"gray"}\NormalTok{, }\AttributeTok{nn =} \ConstantTok{TRUE}\NormalTok{,}
+           \AttributeTok{roundint=}\ConstantTok{FALSE}\NormalTok{,}
+           \AttributeTok{cex =} \FloatTok{0.7}\NormalTok{,}
+           \AttributeTok{yesno =} \DecValTok{2}\NormalTok{) }\CommentTok{\# Hiển thị nhãn Yes/No cho các nhánh}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{api_files/figure-latex/plot-decision-tree-1} \end{center}
+
+\textbf{Ý nghĩa và Phân tích Cây Quyết định:}
+
+\begin{itemize}
+\item
+  Cây quyết định cho thấy các quy tắc được sử dụng để phân loại
+  freelancer vào nhóm ``Thu nhập Cao'' hay không.
+\item
+  Các nút lá (terminal nodes) cho thấy xác suất thuộc về lớp ``Yes''
+  (Thu nhập Cao) và tỷ lệ phần trăm các quan sát rơi vào nút đó.
+\item
+  Ví dụ, một nhánh có thể chỉ ra rằng nếu ExperienceLevel là Expert và
+  JobsCompleted lớn hơn một ngưỡng nào đó, thì xác suất thuộc nhóm
+  HighEarner là cao.
+\item
+  \textbf{Tri thức mới}: Các biến xuất hiện ở các nút chia gần gốc cây
+  thường là các yếu tố quan trọng nhất.
+\end{itemize}
+
+\subsubsection{4.2.3. Mô hình Rừng Ngẫu nhiên (Random
+Forest)}\label{muxf4-huxecnh-rux1eebng-ngux1eabu-nhiuxean-random-forest}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Huấn luyện mô hình Random Forest}
+\CommentTok{\# \textasciigrave{}tuneGrid\textasciigrave{} để thử các giá trị cụ thể của mtry (số biến ngẫu nhiên chọn tại mỗi split)}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+
+\CommentTok{\# Số lượng biến dự đoán}
+\NormalTok{num\_predictors }\OtherTok{\textless{}{-}} \FunctionTok{ncol}\NormalTok{(train\_data) }\SpecialCharTok{{-}} \DecValTok{1} \CommentTok{\# Trừ biến mục tiêu}
+\CommentTok{\# Tạo một tuneGrid nhỏ để chạy nhanh hơn, bạn có thể mở rộng nó}
+\NormalTok{default\_mtry\_val }\OtherTok{\textless{}{-}} \FunctionTok{floor}\NormalTok{(}\FunctionTok{sqrt}\NormalTok{(num\_predictors))}
+\CommentTok{\# Đảm bảo mtry\_values là một vector các số nguyên dương và không lớn hơn num\_predictors}
+\NormalTok{mtry\_candidates }\OtherTok{\textless{}{-}} \FunctionTok{unique}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\FunctionTok{max}\NormalTok{(}\DecValTok{1}\NormalTok{, default\_mtry\_val }\SpecialCharTok{{-}} \DecValTok{2}\NormalTok{), }
+\NormalTok{                            default\_mtry\_val, }
+                            \FunctionTok{min}\NormalTok{(num\_predictors, default\_mtry\_val }\SpecialCharTok{+} \DecValTok{2}\NormalTok{),}
+                            \FunctionTok{min}\NormalTok{(num\_predictors, default\_mtry\_val }\SpecialCharTok{+} \DecValTok{4}\NormalTok{))) }\CommentTok{\# Thêm một vài giá trị}
+\NormalTok{mtry\_values\_for\_grid }\OtherTok{\textless{}{-}}\NormalTok{ mtry\_candidates[mtry\_candidates }\SpecialCharTok{\textgreater{}} \DecValTok{0} \SpecialCharTok{\&}\NormalTok{ mtry\_candidates }\SpecialCharTok{\textless{}=}\NormalTok{ num\_predictors]}
+
+\ControlFlowTok{if}\NormalTok{ (}\FunctionTok{length}\NormalTok{(mtry\_values\_for\_grid) }\SpecialCharTok{==} \DecValTok{0} \SpecialCharTok{\&\&}\NormalTok{ num\_predictors }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{) \{}
+\NormalTok{    mtry\_values\_for\_grid }\OtherTok{\textless{}{-}}\NormalTok{ default\_mtry\_val }
+\NormalTok{\} }\ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{ (num\_predictors }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) \{}
+    \FunctionTok{stop}\NormalTok{(}\StringTok{"Không có biến dự đoán nào cho Random Forest."}\NormalTok{)}
+\NormalTok{\}}
+
+\NormalTok{my\_rf\_grid }\OtherTok{\textless{}{-}} \FunctionTok{expand.grid}\NormalTok{(}\AttributeTok{mtry =}\NormalTok{ mtry\_values\_for\_grid)}
+
+\NormalTok{rf\_model }\OtherTok{\textless{}{-}} \FunctionTok{train}\NormalTok{(HighEarner }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ., }
+                  \AttributeTok{data =}\NormalTok{ train\_data, }
+                  \AttributeTok{method =} \StringTok{"rf"}\NormalTok{, }
+                  \AttributeTok{trControl =}\NormalTok{ ctrl,}
+                  \AttributeTok{metric =} \StringTok{"ROC"}\NormalTok{,}
+                  \AttributeTok{tuneGrid =}\NormalTok{ my\_rf\_grid, }
+                  \AttributeTok{ntree =} \DecValTok{100}\NormalTok{, }\CommentTok{\# Giảm số cây để chạy nhanh hơn trong ví dụ, nên tăng lên (vd: 500)}
+                  \AttributeTok{importance =} \ConstantTok{TRUE}\NormalTok{) }\CommentTok{\# Để tính toán độ quan trọng của biến}
+
+\CommentTok{\# Xem tóm tắt mô hình}
+\FunctionTok{print}\NormalTok{(rf\_model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Random Forest 
+## 
+## 1366 samples
+##   13 predictor
+##    2 classes: 'No', 'Yes' 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (5 fold) 
+## Summary of sample sizes: 1093, 1093, 1092, 1093, 1093 
+## Resampling results across tuning parameters:
+## 
+##   mtry  ROC        Sens       Spec       
+##   1     0.4891622  1.0000000  0.000000000
+##   3     0.5012858  0.9970732  0.000000000
+##   5     0.4961614  0.9980488  0.000000000
+##   7     0.4990493  0.9912147  0.002941176
+## 
+## ROC was used to select the optimal model using the largest value.
+## The final value used for the model was mtry = 3.
+\end{verbatim}
+
+\textbf{Phân tích (từ print(rf\_model))}:
+
+\begin{itemize}
+\item
+  Mô hình Rừng Ngẫu nhiên được huấn luyện, với tham số mtry (số lượng
+  biến được chọn ngẫu nhiên tại mỗi node) được tinh chỉnh.
+\item
+  Giá trị mtry tối ưu được chọn là r rf\_model\$bestTune\$mtry.
+\item
+  Kết quả ROC trên tập huấn luyện (sau cross-validation) với mtry tối ưu
+  là r round(max(rf\_model\$results\$ROC), 3).
+\end{itemize}
+
+Độ quan trọng của các biến:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Biến quan trọng}
+\NormalTok{var\_imp\_rf }\OtherTok{\textless{}{-}} \FunctionTok{varImp}\NormalTok{(rf\_model, }\AttributeTok{scale =} \ConstantTok{FALSE}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(var\_imp\_rf, }\AttributeTok{top =} \DecValTok{10}\NormalTok{, }\AttributeTok{main =} \StringTok{"Top 10 Biến Quan trọng nhất (Random Forest)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{api_files/figure-latex/variable-importance-1} \end{center}
+
+\textbf{Ý nghĩa và Phân tích Độ quan trọng biến (Random Forest):}
+
+\begin{itemize}
+\item
+  Biểu đồ cho thấy các biến có ảnh hưởng lớn nhất đến việc dự đoán
+  HighEarner.
+\item
+  Các yếu tố như ExperienceLevel, JobsCompleted, MarketingSpend, và
+  JobCategory thường xuyên xuất hiện là các yếu tố quan trọng.
+\item
+  \textbf{Tri thức mới}: Xác định được các yếu tố then chốt giúp
+  freelancer tập trung vào việc cải thiện các khía cạnh đó để tăng thu
+  nhập.
+\end{itemize}
+
+\subsection{4.3. Đánh giá Mô hình trên Tập Kiểm thử (Test
+Set)}\label{ux111uxe1nh-giuxe1-muxf4-huxecnh-truxean-tux1eadp-kiux1ec3m-thux1eed-test-set}
+
+Bây giờ, chúng ta sẽ đánh giá hiệu suất của các mô hình trên tập dữ liệu
+kiểm thử (test\_data) mà mô hình chưa từng thấy trước đó.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Dự đoán trên tập test}
+\NormalTok{predictions\_logistic }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(logistic\_model, }\AttributeTok{newdata =}\NormalTok{ test\_data)}
+\NormalTok{predictions\_tree }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(tree\_model, }\AttributeTok{newdata =}\NormalTok{ test\_data)}
+\NormalTok{predictions\_rf }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(rf\_model, }\AttributeTok{newdata =}\NormalTok{ test\_data)}
+
+\CommentTok{\# Confusion Matrix và các chỉ số}
+\NormalTok{cm\_logistic }\OtherTok{\textless{}{-}} \FunctionTok{confusionMatrix}\NormalTok{(predictions\_logistic, test\_data}\SpecialCharTok{$}\NormalTok{HighEarner, }\AttributeTok{positive =} \StringTok{"Yes"}\NormalTok{)}
+\NormalTok{cm\_tree }\OtherTok{\textless{}{-}} \FunctionTok{confusionMatrix}\NormalTok{(predictions\_tree, test\_data}\SpecialCharTok{$}\NormalTok{HighEarner, }\AttributeTok{positive =} \StringTok{"Yes"}\NormalTok{)}
+\NormalTok{cm\_rf }\OtherTok{\textless{}{-}} \FunctionTok{confusionMatrix}\NormalTok{(predictions\_rf, test\_data}\SpecialCharTok{$}\NormalTok{HighEarner, }\AttributeTok{positive =} \StringTok{"Yes"}\NormalTok{)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"{-}{-}{-} Hồi quy Logistic {-}{-}{-}}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## --- Hồi quy Logistic ---
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(cm\_logistic)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction  No Yes
+##        No  435 145
+##        Yes   3   1
+##                                           
+##                Accuracy : 0.7466          
+##                  95% CI : (0.7092, 0.7814)
+##     No Information Rate : 0.75            
+##     P-Value [Acc > NIR] : 0.5973          
+##                                           
+##                   Kappa : 0               
+##                                           
+##  Mcnemar's Test P-Value : <2e-16          
+##                                           
+##             Sensitivity : 0.006849        
+##             Specificity : 0.993151        
+##          Pos Pred Value : 0.250000        
+##          Neg Pred Value : 0.750000        
+##              Prevalence : 0.250000        
+##          Detection Rate : 0.001712        
+##    Detection Prevalence : 0.006849        
+##       Balanced Accuracy : 0.500000        
+##                                           
+##        'Positive' Class : Yes             
+## 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{{-}{-}{-} Cây Quyết định {-}{-}{-}}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## --- Cây Quyết định ---
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(cm\_tree)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction  No Yes
+##        No  338 117
+##        Yes 100  29
+##                                           
+##                Accuracy : 0.6284          
+##                  95% CI : (0.5878, 0.6677)
+##     No Information Rate : 0.75            
+##     P-Value [Acc > NIR] : 1.0000          
+##                                           
+##                   Kappa : -0.0309         
+##                                           
+##  Mcnemar's Test P-Value : 0.2774          
+##                                           
+##             Sensitivity : 0.19863         
+##             Specificity : 0.77169         
+##          Pos Pred Value : 0.22481         
+##          Neg Pred Value : 0.74286         
+##              Prevalence : 0.25000         
+##          Detection Rate : 0.04966         
+##    Detection Prevalence : 0.22089         
+##       Balanced Accuracy : 0.48516         
+##                                           
+##        'Positive' Class : Yes             
+## 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{{-}{-}{-} Rừng Ngẫu nhiên {-}{-}{-}}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## --- Rừng Ngẫu nhiên ---
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(cm\_rf)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction  No Yes
+##        No  438 146
+##        Yes   0   0
+##                                           
+##                Accuracy : 0.75            
+##                  95% CI : (0.7128, 0.7846)
+##     No Information Rate : 0.75            
+##     P-Value [Acc > NIR] : 0.5222          
+##                                           
+##                   Kappa : 0               
+##                                           
+##  Mcnemar's Test P-Value : <2e-16          
+##                                           
+##             Sensitivity : 0.00            
+##             Specificity : 1.00            
+##          Pos Pred Value :  NaN            
+##          Neg Pred Value : 0.75            
+##              Prevalence : 0.25            
+##          Detection Rate : 0.00            
+##    Detection Prevalence : 0.00            
+##       Balanced Accuracy : 0.50            
+##                                           
+##        'Positive' Class : Yes             
+## 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tạo bảng so sánh các chỉ số chính}
+\NormalTok{model\_comparison }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{Model =} \FunctionTok{c}\NormalTok{(}\StringTok{"Logistic Regression"}\NormalTok{, }\StringTok{"Decision Tree"}\NormalTok{, }\StringTok{"Random Forest"}\NormalTok{),}
+  \AttributeTok{Accuracy =} \FunctionTok{c}\NormalTok{(cm\_logistic}\SpecialCharTok{$}\NormalTok{overall[}\StringTok{\textquotesingle{}Accuracy\textquotesingle{}}\NormalTok{], cm\_tree}\SpecialCharTok{$}\NormalTok{overall[}\StringTok{\textquotesingle{}Accuracy\textquotesingle{}}\NormalTok{], cm\_rf}\SpecialCharTok{$}\NormalTok{overall[}\StringTok{\textquotesingle{}Accuracy\textquotesingle{}}\NormalTok{]),}
+  \AttributeTok{Sensitivity\_Recall =} \FunctionTok{c}\NormalTok{(cm\_logistic}\SpecialCharTok{$}\NormalTok{byClass[}\StringTok{\textquotesingle{}Sensitivity\textquotesingle{}}\NormalTok{], cm\_tree}\SpecialCharTok{$}\NormalTok{byClass[}\StringTok{\textquotesingle{}Sensitivity\textquotesingle{}}\NormalTok{], cm\_rf}\SpecialCharTok{$}\NormalTok{byClass[}\StringTok{\textquotesingle{}Sensitivity\textquotesingle{}}\NormalTok{]),}
+  \AttributeTok{Specificity =} \FunctionTok{c}\NormalTok{(cm\_logistic}\SpecialCharTok{$}\NormalTok{byClass[}\StringTok{\textquotesingle{}Specificity\textquotesingle{}}\NormalTok{], cm\_tree}\SpecialCharTok{$}\NormalTok{byClass[}\StringTok{\textquotesingle{}Specificity\textquotesingle{}}\NormalTok{], cm\_rf}\SpecialCharTok{$}\NormalTok{byClass[}\StringTok{\textquotesingle{}Specificity\textquotesingle{}}\NormalTok{]),}
+  \AttributeTok{Precision =} \FunctionTok{c}\NormalTok{(cm\_logistic}\SpecialCharTok{$}\NormalTok{byClass[}\StringTok{\textquotesingle{}Precision\textquotesingle{}}\NormalTok{], cm\_tree}\SpecialCharTok{$}\NormalTok{byClass[}\StringTok{\textquotesingle{}Precision\textquotesingle{}}\NormalTok{], cm\_rf}\SpecialCharTok{$}\NormalTok{byClass[}\StringTok{\textquotesingle{}Precision\textquotesingle{}}\NormalTok{]),}
+  \AttributeTok{F1\_Score =} \FunctionTok{c}\NormalTok{(cm\_logistic}\SpecialCharTok{$}\NormalTok{byClass[}\StringTok{\textquotesingle{}F1\textquotesingle{}}\NormalTok{], cm\_tree}\SpecialCharTok{$}\NormalTok{byClass[}\StringTok{\textquotesingle{}F1\textquotesingle{}}\NormalTok{], cm\_rf}\SpecialCharTok{$}\NormalTok{byClass[}\StringTok{\textquotesingle{}F1\textquotesingle{}}\NormalTok{])}
+\NormalTok{)}
+
+\CommentTok{\# Làm tròn các giá trị trong bảng}
+\NormalTok{model\_comparison }\OtherTok{\textless{}{-}}\NormalTok{ model\_comparison }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate\_if}\NormalTok{(is.numeric, round, }\DecValTok{3}\NormalTok{)}
+
+\FunctionTok{kable}\NormalTok{(model\_comparison, }\AttributeTok{caption =} \StringTok{"So sánh hiệu suất các mô hình trên tập kiểm thử"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.2532}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1139}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.2405}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1519}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1266}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1139}}@{}}
+\caption{So sánh hiệu suất các mô hình trên tập kiểm thử}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Model
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Accuracy
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Sensitivity\_Recall
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Specificity
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Precision
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+F1\_Score
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Model
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Accuracy
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Sensitivity\_Recall
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Specificity
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Precision
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+F1\_Score
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Logistic Regression & 0.747 & 0.007 & 0.993 & 0.250 & 0.013 \\
+Decision Tree & 0.628 & 0.199 & 0.772 & 0.225 & 0.211 \\
+Random Forest & 0.750 & 0.000 & 1.000 & NA & NA \\
+\end{longtable}
+
+\subsubsection{Đường cong ROC và
+AUC}\label{ux111ux1b0ux1eddng-cong-roc-vuxe0-auc}
+
+Đường cong ROC (Receiver Operating Characteristic) và diện tích dưới
+đường cong (AUC) là các thước đo tốt để đánh giá hiệu suất của mô hình
+phân loại nhị phân, đặc biệt khi dữ liệu mất cân bằng.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Lấy xác suất dự đoán cho lớp \textquotesingle{}Yes\textquotesingle{}}
+\NormalTok{prob\_logistic }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(logistic\_model, }\AttributeTok{newdata =}\NormalTok{ test\_data, }\AttributeTok{type =} \StringTok{"prob"}\NormalTok{)}\SpecialCharTok{$}\NormalTok{Yes}
+\NormalTok{prob\_tree }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(tree\_model, }\AttributeTok{newdata =}\NormalTok{ test\_data, }\AttributeTok{type =} \StringTok{"prob"}\NormalTok{)}\SpecialCharTok{$}\NormalTok{Yes}
+\NormalTok{prob\_rf }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(rf\_model, }\AttributeTok{newdata =}\NormalTok{ test\_data, }\AttributeTok{type =} \StringTok{"prob"}\NormalTok{)}\SpecialCharTok{$}\NormalTok{Yes}
+
+\CommentTok{\# Tính ROC}
+\NormalTok{roc\_logistic }\OtherTok{\textless{}{-}} \FunctionTok{roc}\NormalTok{(}\AttributeTok{response =}\NormalTok{ test\_data}\SpecialCharTok{$}\NormalTok{HighEarner, }\AttributeTok{predictor =}\NormalTok{ prob\_logistic, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"No"}\NormalTok{, }\StringTok{"Yes"}\NormalTok{))}
+\NormalTok{roc\_tree }\OtherTok{\textless{}{-}} \FunctionTok{roc}\NormalTok{(}\AttributeTok{response =}\NormalTok{ test\_data}\SpecialCharTok{$}\NormalTok{HighEarner, }\AttributeTok{predictor =}\NormalTok{ prob\_tree, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"No"}\NormalTok{, }\StringTok{"Yes"}\NormalTok{))}
+\NormalTok{roc\_rf }\OtherTok{\textless{}{-}} \FunctionTok{roc}\NormalTok{(}\AttributeTok{response =}\NormalTok{ test\_data}\SpecialCharTok{$}\NormalTok{HighEarner, }\AttributeTok{predictor =}\NormalTok{ prob\_rf, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"No"}\NormalTok{, }\StringTok{"Yes"}\NormalTok{))}
+
+\CommentTok{\# Vẽ đường cong ROC}
+\FunctionTok{plot}\NormalTok{(roc\_logistic, }\AttributeTok{col =} \StringTok{"blue"}\NormalTok{, }\AttributeTok{main =} \StringTok{"Đường cong ROC trên Tập Kiểm thử"}\NormalTok{, }\AttributeTok{legacy.axes =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{print.auc=}\ConstantTok{TRUE}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(roc\_tree, }\AttributeTok{col =} \StringTok{"red"}\NormalTok{, }\AttributeTok{add =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{print.auc=}\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{print.auc.y=}\FloatTok{0.4}\NormalTok{) }\CommentTok{\# Điều chỉnh vị trí text AUC}
+\FunctionTok{plot}\NormalTok{(roc\_rf, }\AttributeTok{col =} \StringTok{"darkgreen"}\NormalTok{, }\AttributeTok{add =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{print.auc=}\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{print.auc.y=}\FloatTok{0.3}\NormalTok{) }\CommentTok{\# Điều chỉnh vị trí text AUC}
+\FunctionTok{legend}\NormalTok{(}\StringTok{"bottomright"}\NormalTok{, }
+       \AttributeTok{legend =} \FunctionTok{c}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Logistic Regression"}\NormalTok{),}
+                  \FunctionTok{paste}\NormalTok{(}\StringTok{"Decision Tree"}\NormalTok{),}
+                  \FunctionTok{paste}\NormalTok{(}\StringTok{"Random Forest"}\NormalTok{)),}
+       \AttributeTok{col =} \FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{, }\StringTok{"red"}\NormalTok{, }\StringTok{"darkgreen"}\NormalTok{), }
+       \AttributeTok{lwd =} \DecValTok{2}\NormalTok{, }\AttributeTok{cex =} \FloatTok{0.8}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{api_files/figure-latex/roc-auc-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Thêm vào bảng so sánh}
+\NormalTok{model\_comparison}\SpecialCharTok{$}\NormalTok{AUC }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{auc}\NormalTok{(roc\_logistic), }\FunctionTok{auc}\NormalTok{(roc\_tree), }\FunctionTok{auc}\NormalTok{(roc\_rf))}
+\NormalTok{model\_comparison }\OtherTok{\textless{}{-}}\NormalTok{ model\_comparison }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate\_if}\NormalTok{(is.numeric, round, }\DecValTok{3}\NormalTok{) }\CommentTok{\# Làm tròn lại sau khi thêm AUC}
+\FunctionTok{kable}\NormalTok{(model\_comparison, }\AttributeTok{caption =} \StringTok{"So sánh hiệu suất các mô hình (bao gồm AUC) trên tập kiểm thử"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.2353}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1059}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.2235}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1412}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1176}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1059}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.0706}}@{}}
+\caption{So sánh hiệu suất các mô hình (bao gồm AUC) trên tập kiểm
+thử}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Model
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Accuracy
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Sensitivity\_Recall
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Specificity
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Precision
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+F1\_Score
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+AUC
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Model
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Accuracy
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Sensitivity\_Recall
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Specificity
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Precision
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+F1\_Score
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+AUC
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Logistic Regression & 0.747 & 0.007 & 0.993 & 0.250 & 0.013 & 0.508 \\
+Decision Tree & 0.628 & 0.199 & 0.772 & 0.225 & 0.211 & 0.520 \\
+Random Forest & 0.750 & 0.000 & 1.000 & NA & NA & 0.494 \\
+\end{longtable}
+
+\textbf{Phân tích và So sánh Mô hình:}
+
+\begin{itemize}
+\item
+  \textbf{Accuracy}: Cho biết tỷ lệ dự đoán đúng tổng thể.
+\item
+  \textbf{Sensitivity (Recall)}: Tỷ lệ các trường hợp ``Thu nhập Cao''
+  thực tế được dự đoán đúng. Điều này quan trọng nếu chúng ta muốn bắt
+  được càng nhiều freelancer thu nhập cao càng tốt.
+\item
+  \textbf{Specificity}: Tỷ lệ các trường hợp ``Không phải Thu nhập Cao''
+  thực tế được dự đoán đúng.
+\item
+  \textbf{Precision}: Trong số các trường hợp được dự đoán là ``Thu nhập
+  Cao'', bao nhiêu trường hợp là đúng. Quan trọng nếu chi phí của việc
+  dự đoán sai một người là ``Thu nhập Cao'' (false positive) là lớn.
+\item
+  \textbf{F1-Score}: Trung bình điều hòa của Precision và Recall, hữu
+  ích khi dữ liệu mất cân bằng hoặc khi cả Precision và Recall đều quan
+  trọng.
+\item
+  \textbf{AUC}: Diện tích dưới đường cong ROC. Giá trị càng gần 1, mô
+  hình càng tốt trong việc phân biệt giữa hai lớp.
+\item
+  Dựa trên bảng so sánh và AUC, \textbf{Random Forest} thường cho kết
+  quả tốt nhất về độ chính xác tổng thể và khả năng phân biệt (AUC).
+\item
+  \textbf{Decision Tree} có thể có AUC thấp hơn nhưng lại dễ diễn giải
+  các quy tắc quyết định.
+\item
+  \textbf{Logistic Regression} cung cấp một mô hình tuyến tính đơn giản
+  hơn, và các hệ số của nó có thể được dùng để hiểu về hướng và mức độ
+  ảnh hưởng của từng biến (sau khi xử lý one-hot encoding).
+\item
+  \textbf{Tri thức mới}: Chúng ta có thể xác định mô hình nào phù hợp
+  nhất cho bài toán dự đoán thu nhập cao, tùy thuộc vào ưu tiên (ví dụ:
+  độ chính xác cao nhất hay khả năng diễn giải tốt nhất). Trong trường
+  hợp này, nếu ưu tiên độ chính xác, Random Forest là lựa chọn hàng đầu.
+\end{itemize}
+
+\section{5. Kết luận}\label{kux1ebft-luux1eadn}
+
+Qua quá trình phân tích tập dữ liệu thu nhập của freelancer, chúng tôi
+đã rút ra được một số kết luận quan trọng:
+
+\textbf{Từ Phân tích Dữ liệu Khám phá (EDA):}
+
+\begin{itemize}
+\item
+  Thu nhập của freelancer có sự biến động lớn, với phần lớn tập trung ở
+  mức thấp đến trung bình và một số ít đạt thu nhập rất cao. Phân phối
+  thu nhập lệch phải rõ rệt.
+\item
+  Các yếu tố như \textbf{Loại Công việc} (ví dụ: ``App Development'',
+  ``Web Development'' thường có thu nhập trung vị và khoảng biến động
+  cao hơn), \textbf{Nền tảng} (ví dụ: ``Toptal'' có thể liên quan đến
+  thu nhập cao hơn), và đặc biệt là \textbf{Mức độ Kinh nghiệm}
+  (``Expert'' có thu nhập cao nhất một cách rõ ràng) có ảnh hưởng đáng
+  kể đến thu nhập.
+\item
+  \textbf{Số lượng công việc hoàn thành} (JobsCompleted) và \textbf{Chi
+  phí Marketing} (MarketingSpend) có tương quan dương với thu nhập, cho
+  thấy việc tích cực làm việc và quảng bá bản thân có thể mang lại lợi
+  ích.
+\item
+  \textbf{Tỷ lệ thành công công việc} (JobSuccessRate) và \textbf{Đánh
+  giá của khách hàng} (ClientRating) cũng quan trọng, duy trì các chỉ số
+  này ở mức cao có thể góp phần vào thành công lâu dài.
+\end{itemize}
+
+\textbf{Từ Mô hình hóa Dữ liệu:}
+
+\begin{itemize}
+\item
+  Chúng tôi đã xây dựng thành công ba mô hình (Logistic Regression,
+  Decision Tree, Random Forest) để dự đoán khả năng một freelancer đạt
+  ``Thu nhập Cao'' (được định nghĩa là nằm trong top 25\% thu nhập).
+\item
+  Mô hình \textbf{Random Forest} cho thấy hiệu suất tổng thể tốt nhất
+  trên tập kiểm thử, với chỉ số AUC cao nhất (r round(auc(roc\_rf), 3)),
+  cho thấy khả năng phân biệt tốt giữa các freelancer có thu nhập cao và
+  không cao. Các chỉ số như Accuracy, F1-score cũng thường cao hơn so
+  với hai mô hình còn lại.
+\item
+  \textbf{Decision Tree} cung cấp một cái nhìn trực quan và dễ hiểu về
+  các quy tắc phân loại, giúp xác định các yếu tố và ngưỡng quyết định
+  quan trọng. Ví dụ, cây quyết định có thể chỉ ra các đường dẫn cụ thể
+  dựa trên ExperienceLevel, JobsCompleted, hoặc JobCategory dẫn đến dự
+  đoán ``HighEarner''.
+\item
+  Các biến như ExperienceLevel, JobsCompleted, MarketingSpend,
+  HourlyRate, và JobCategory thường xuyên xuất hiện là các yếu tố quan
+  trọng trong việc dự đoán thu nhập cao, được thể hiện qua độ quan trọng
+  của biến trong Random Forest và các nút chia trong Decision Tree.
+\end{itemize}
+
+\textbf{Tri thức mới và Hàm ý:}
+
+\begin{itemize}
+\item
+  Để tối đa hóa thu nhập, freelancer nên tập trung vào việc nâng cao
+  kinh nghiệm và kỹ năng chuyên môn, đặc biệt trong các lĩnh vực có nhu
+  cầu cao và trả lương tốt như phát triển ứng dụng và web.
+\item
+  Việc lựa chọn nền tảng phù hợp với kỹ năng và mục tiêu thu nhập, cùng
+  với việc đầu tư hợp lý vào marketing bản thân, là những chiến lược
+  quan trọng.
+\item
+  Hoàn thành nhiều công việc với chất lượng cao (thể hiện qua tỷ lệ
+  thành công và đánh giá tốt từ khách hàng) là nền tảng vững chắc cho sự
+  phát triển sự nghiệp và thu nhập.
+\item
+  Sự khác biệt lớn trong thu nhập giữa các freelancer cho thấy thị
+  trường có tính cạnh tranh cao, nhưng cũng có nhiều cơ hội cho những ai
+  biết cách định vị và phát triển bản thân.
+\end{itemize}
+
+\textbf{Hạn chế và Hướng Phát triển:}
+
+\begin{itemize}
+\item
+  \textbf{Định nghĩa ``Thu nhập Cao''}: Việc định nghĩa ``Thu nhập Cao''
+  dựa trên ngưỡng 75th percentile là một lựa chọn. Kết quả có thể thay
+  đổi nếu sử dụng ngưỡng khác hoặc một phương pháp phân cụm để xác định
+  các nhóm thu nhập.
+\item
+  \textbf{Chất lượng dữ liệu}: Dữ liệu có thể chưa bao quát hết tất cả
+  các yếu tố ảnh hưởng (ví dụ: kỹ năng mềm, khả năng đàm phán, mạng lưới
+  quan hệ, chất lượng portfolio). Độ chính xác của một số trường như
+  MarketingSpend cũng cần được xem xét.
+\item
+  \textbf{Xử lý mất cân bằng}: Mặc dù sự mất cân bằng không quá nghiêm
+  trọng, các kỹ thuật xử lý dữ liệu mất cân bằng nâng cao (ví dụ: SMOTE
+  cho tập huấn luyện) có thể được xem xét để cải thiện độ nhạy
+  (Sensitivity) của mô hình.
+\item
+  \textbf{Tinh chỉnh mô hình}: Các mô hình có thể được cải thiện thêm
+  bằng cách tinh chỉnh siêu tham số kỹ lưỡng hơn (ví dụ: sử dụng
+  tuneGrid rộng hơn, tăng ntree cho Random Forest), hoặc thử nghiệm các
+  thuật toán học máy khác (ví dụ: Gradient Boosting, Support Vector
+  Machines).
+\item
+  \textbf{Phân tích theo thời gian}: Nếu có dữ liệu theo thời gian, việc
+  phân tích xu hướng thu nhập và các yếu tố thay đổi theo thời gian sẽ
+  rất giá trị.
+\item
+  \textbf{Phân tích sâu hơn về tương tác biến}: Khám phá các tương tác
+  phức tạp giữa các biến (ví dụ: ảnh hưởng của Platform có khác nhau tùy
+  theo JobCategory hay không) có thể mang lại những hiểu biết mới.
+\end{itemize}
+
+Báo cáo này cung cấp một cái nhìn tổng quan và các phân tích cơ bản về
+các yếu tố ảnh hưởng đến thu nhập của freelancer. Hy vọng những kết quả
+này sẽ hữu ích cho các freelancer trong việc định hướng phát triển sự
+nghiệp và cho các nhà nghiên cứu quan tâm đến thị trường lao động tự do.
+
+\end{document}

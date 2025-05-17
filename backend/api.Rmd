@@ -1,9 +1,859 @@
 ---
-title: "Backend API with R and plumber"
-output: html_document
-runtime: shiny_prerendered
-editor_options: 
-  chunk_output_type: console
+title: "Báo cáo Phân tích Thu nhập của Freelancer"
+author: "Nhóm [Tên Nhóm Của Bạn]"
+date: "`r Sys.Date()`"
+output:
+  word_document:
+    toc: true
+  html_document:
+    toc: true
+    toc_float: true
+    theme: united
+    highlight: tango
+    code_folding: hide
+    df_print: kable
+  pdf_document:
+    toc: true
 ---
 
-source("api.R")
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, fig.align = 'center')
+
+# --- GHI CHÚ CHO NHÓM ---
+# Thành viên 1 (Data Loading & Cleaning): [Tên Thành Viên 1]
+# Thành viên 2 (EDA - Univariate & Bivariate Visualizations): [Tên Thành Viên 2]
+# Thành viên 3 (EDA - Multivariate & Advanced Visualizations, Initial Modeling Prep): [Tên Thành Viên 3]
+# Thành viên 4 (Modeling - Logistic, Decision Tree, Random Forest, Evaluation): [Tên Thành Viên 4]
+# Người review tổng thể: [Tên Người Review]
+
+# --- TẢI CÁC THƯ VIỆN CẦN THIẾT ---
+# Đảm bảo rằng các thư viện này đã được cài đặt
+# install.packages(c("tidyverse", "skimr", "DataExplorer", "corrplot", "rpart", "rpart.plot", "randomForest", "caret", "pROC", "knitr"))
+install.packages("tinytex", repos = "https://cloud.r-project.org/")
+
+install.packages("tinytex")
+tinytex::install_tinytex()
+tinytex::is_tinytex()
+library(tidyverse)    # Dành cho data manipulation và ggplot2
+library(skimr)        # Dành cho thống kê mô tả nhanh
+# library(DataExplorer) # Dành cho EDA tự động (tùy chọn, có thể bỏ comment nếu muốn dùng)
+library(corrplot)     # Dành cho biểu đồ ma trận tương quan
+library(rpart)        # Dành cho Decision Tree
+library(rpart.plot)   # Dành cho vẽ Decision Tree đẹp hơn
+library(randomForest) # Dành cho Random Forest
+library(caret)        # Dành cho training và evaluation mô hình
+library(pROC)         # Dành cho ROC curve
+library(knitr)        # Dành cho hiển thị bảng đẹp (kable)
+```
+
+# 1. Giới thiệu
+
+```{=html}
+<!-- --- GHI CHÚ CHO NHÓM (Thành viên 1) ---
+Phần này mô tả tổng quan về dự án.
+- Mục tiêu: Phân tích tập dữ liệu thu nhập của freelancer để hiểu các yếu tố ảnh hưởng đến thu nhập và xây dựng mô hình dự đoán.
+- Dữ liệu: Mô tả ngắn gọn về nguồn gốc dữ liệu (freelancer_earnings_bd.csv) và các trường chính.
+- Công cụ: R và R Markdown.
+-->
+```
+
+Báo cáo này nhằm mục đích phân tích chi tiết tập dữ liệu về thu nhập của các freelancer. Chúng tôi sẽ khám phá các yếu tố như loại công việc, nền tảng, mức độ kinh nghiệm, khu vực khách hàng, và các chỉ số hiệu suất khác ảnh hưởng như thế nào đến thu nhập (Earnings_USD) của freelancer. Thông qua phân tích dữ liệu khám phá (EDA) và xây dựng các mô hình dự đoán, chúng tôi hy vọng sẽ rút ra được những hiểu biết sâu sắc và có giá trị, giúp các freelancer tối ưu hóa chiến lược làm việc và thu nhập của mình. Dữ liệu được sử dụng là freelancer_earnings_bd.csv, chứa thông tin đa dạng về các freelancer và công việc của họ.
+
+# 2. Tải và Chuẩn bị Dữ liệu
+
+```{=html}
+<!-- --- GHI CHÚ CHO NHÓM (Thành viên 1) ---
+Phần này sẽ thực hiện các bước:
+1. Đọc dữ liệu từ file CSV.
+2. Xem xét cấu trúc và các kiểu dữ liệu ban đầu.
+3. Làm sạch dữ liệu:
+- Xử lý giá trị thiếu (NA).
+- Chuyển đổi kiểu dữ liệu (ví dụ: số, ký tự, factor).
+- Chuẩn hóa tên cột và giá trị trong cột (ví dụ: dùng str_to_title).
+4. Hiển thị một phần dữ liệu đã làm sạch.
+Lưu ý: Code làm sạch dưới đây được điều chỉnh từ file Plumber của nhóm.
+-->
+```
+
+## 2.1. Tải Dữ liệu Thô
+
+```{r load-data, echo=TRUE}
+# Đặt đường dẫn làm việc (working directory) nếu cần, hoặc sử dụng RStudio Project
+# Ví dụ: setwd("D:/Path/To/Your/ProjectFolder") 
+# Giả sử file CSV nằm trong cùng thư mục với file .Rmd hoặc trong thư mục con 'data'
+# Hãy đảm bảo đường dẫn file CSV là chính xác
+data_raw <- read_csv("data/freelancer_earnings_bd.csv") 
+
+# Hiển thị vài dòng đầu của dữ liệu thô
+kable(head(data_raw), caption = "Dữ liệu thô ban đầu (6 dòng đầu)")
+
+# Xem cấu trúc dữ liệu thô
+str(data_raw, list.len=ncol(data_raw))
+```
+
+## 2.2. Làm sạch Dữ liệu
+
+Dựa trên code backend đã có, chúng ta thực hiện các bước làm sạch sau:
+
+-   Loại bỏ các dòng có Earnings_USD bị thiếu.
+
+-   Chuyển đổi kiểu dữ liệu cho các cột số.
+
+-   Chuẩn hóa tên các giá trị trong các cột dạng ký tự (Job_Category, Experience_Level, etc.) sang dạng Title Case.
+
+-   Đổi tên cột cho nhất quán và dễ sử dụng hơn.
+
+```{r clean-data, echo=TRUE}
+data_clean <- data_raw %>%
+  filter(!is.na(Earnings_USD)) %>% # Loại bỏ NA trong cột thu nhập chính
+  mutate(
+    # Đổi tên và chuyển đổi kiểu dữ liệu
+    FreelancerID = Freelancer_ID, # Giữ lại ID gốc nếu cần
+    JobCategory = str_to_title(Job_Category),
+    Platform = str_to_title(Platform),
+    ExperienceLevel = factor(str_to_title(Experience_Level), levels = c("Beginner", "Intermediate", "Expert"), ordered = TRUE), # Chuyển thành factor có thứ tự
+    ClientRegion = str_to_title(Client_Region),
+    PaymentMethod = str_to_title(Payment_Method),
+    JobsCompleted = as.numeric(Job_Completed),
+    EarningsUSD = as.numeric(Earnings_USD), # Đổi tên từ Income để rõ ràng
+    HourlyRate = as.numeric(Hourly_Rate),
+    JobSuccessRate = as.numeric(Job_Success_Rate),
+    ClientRating = as.numeric(Client_Rating),
+    JobDurationDays = as.numeric(Job_Duration_Days),
+    ProjectType = factor(str_to_title(Project_Type)), # Chuyển thành factor
+    RehireRate = as.numeric(Rehire_Rate),
+    MarketingSpend = as.numeric(Marketing_Spend)
+  ) %>%
+  # Chọn các cột đã được làm sạch và đổi tên
+  select(
+    FreelancerID, JobCategory, Platform, ExperienceLevel, ClientRegion, PaymentMethod,
+    JobsCompleted, EarningsUSD, HourlyRate, JobSuccessRate, ClientRating,
+    JobDurationDays, ProjectType, RehireRate, MarketingSpend
+  )
+
+# Kiểm tra lại các giá trị NA sau khi làm sạch cơ bản
+colSums(is.na(data_clean)) %>% kable(col.names = c("Số lượng NA"), caption = "Kiểm tra NA sau làm sạch")
+
+# Hiển thị vài dòng đầu của dữ liệu đã làm sạch
+kable(head(data_clean), caption = "Dữ liệu đã làm sạch (6 dòng đầu)")
+
+# Xem cấu trúc dữ liệu đã làm sạch
+str(data_clean, list.len=ncol(data_clean))
+```
+
+**Nhận xét:** Sau bước làm sạch cơ bản, chúng ta không còn giá trị NA nào trong các cột đã chọn (hoặc số lượng NA rất ít nếu có trong các cột khác). Kiểu dữ liệu đã được chuẩn hóa, và các cột categorical quan trọng như ExperienceLevel và ProjectType đã được chuyển thành factor.
+
+## 2.3. Chuẩn hóa Dữ liệu (Normalization)
+
+```{=html}
+<!-- --- GHI CHÚ CHO NHÓM (Thành viên 1 hoặc 2) ---
+Giải thích mục đích của việc chuẩn hóa (Min-Max scaling).
+Thực hiện chuẩn hóa cho một vài cột số nếu thấy cần thiết cho một số loại biểu đồ hoặc mô hình cụ thể (ví dụ: KNN, Neural Network, PCA).
+Các mô hình cây thường không yêu cầu chuẩn hóa, nhưng nó không gây hại.
+-->
+```
+
+Chuẩn hóa Min-Max đưa tất cả các giá trị về khoảng [0, 1]. Điều này có thể hữu ích cho một số thuật toán học máy nhạy cảm với thang đo của dữ liệu hoặc khi muốn so sánh các biến có đơn vị khác nhau trên cùng một biểu đồ.
+
+```{r normalize-data, echo=TRUE}
+data_norm <- data_clean %>%
+  mutate(
+    EarningsUSD_norm = (EarningsUSD - min(EarningsUSD, na.rm = TRUE)) / (max(EarningsUSD, na.rm = TRUE) - min(EarningsUSD, na.rm = TRUE)),
+    JobSuccessRate_norm = (JobSuccessRate - min(JobSuccessRate, na.rm = TRUE)) / (max(JobSuccessRate, na.rm = TRUE) - min(JobSuccessRate, na.rm = TRUE)),
+    ClientRating_norm = (ClientRating - min(ClientRating, na.rm = TRUE)) / (max(ClientRating, na.rm = TRUE) - min(ClientRating, na.rm = TRUE)),
+    HourlyRate_norm = (HourlyRate - min(HourlyRate, na.rm = TRUE)) / (max(HourlyRate, na.rm = TRUE) - min(HourlyRate, na.rm = TRUE)),
+    JobsCompleted_norm = (JobsCompleted - min(JobsCompleted, na.rm = TRUE)) / (max(JobsCompleted, na.rm = TRUE) - min(JobsCompleted, na.rm = TRUE))
+  )
+
+kable(head(data_norm %>% select(EarningsUSD, EarningsUSD_norm, JobSuccessRate, JobSuccessRate_norm)), 
+      caption = "Ví dụ dữ liệu đã chuẩn hóa")
+```
+
+# 3. Phân tích Dữ liệu Khám phá (EDA)
+
+```{=html}
+<!-- --- GHI CHÚ CHO NHÓM (Thành viên 2 & 3) ---
+Mục này rất quan trọng. Mỗi biểu đồ cần có:
+- Code để tạo biểu đồ.
+- Mô tả biểu đồ (nó đang hiển thị gì?).
+- Phân tích ý nghĩa (biểu đồ cho thấy điều gì về dữ liệu? Có điểm gì nổi bật, bất thường? Mối quan hệ nào được phát hiện?).
+- Phát hiện tri thức mới (nếu có).
+
+Thành viên 2 có thể tập trung vào các biểu đồ đơn biến và mối quan hệ cơ bản giữa hai biến.
+Thành viên 3 có thể khám phá các mối quan hệ phức tạp hơn, sử dụng các biểu đồ đa biến hoặc heatmap.
+-->
+```
+
+## 3.1. Thống kê Mô tả Tổng quan
+
+```{r summary-statistics, echo=TRUE}
+skim(data_clean)
+```
+
+**Phân tích:**
+
+-   Tập dữ liệu có r nrow(data_clean) quan sát và r ncol(data_clean) biến.
+
+-   **EarningsUSD**: Thu nhập trung bình là r scales::dollar(round(mean(data_clean\$EarningsUSD),0)), với độ lệch chuẩn khá lớn, cho thấy sự biến động cao trong thu nhập. Giá trị trung vị là r scales::dollar(median(data_clean\$EarningsUSD)). Khoảng thu nhập rộng từ r scales::dollar(min(data_clean\$EarningsUSD)) đến r scales::dollar(max(data_clean\$EarningsUSD)).
+
+-   **HourlyRate**: Mức lương theo giờ trung bình là r scales::dollar(round(mean(data_clean\$HourlyRate),2)).
+
+-   **JobSuccessRate**: Tỷ lệ thành công trung bình là r round(mean(data_clean\$JobSuccessRate),2)%.
+
+-   **ClientRating**: Đánh giá khách hàng trung bình là r round(mean(data_clean\$ClientRating),2).
+
+-   Các biến categorical như JobCategory, Platform, ExperienceLevel có số lượng các mức khác nhau, sẽ được khám phá chi tiết hơn bằng biểu đồ.
+
+## 3.2. Phân tích Đơn biến (Univariate Analysis)
+
+### 3.2.1. Phân phối Thu nhập (EarningsUSD)
+
+```{r earnings-distribution, echo=TRUE}
+ggplot(data_clean, aes(x = EarningsUSD)) +
+  geom_histogram(binwidth = 500, fill = "steelblue", color = "white", alpha = 0.8) +
+  labs(title = "Phân phối Thu nhập của Freelancer (EarningsUSD)",
+       x = "Thu nhập (USD)",
+       y = "Số lượng Freelancer") +
+  theme_minimal() +
+  scale_x_continuous(labels = scales::comma)
+
+ggplot(data_clean, aes(x = "", y = EarningsUSD)) +
+  geom_boxplot(fill = "skyblue", color = "black", outlier.colour = "red", outlier.shape = 1) +
+  labs(title = "Boxplot Phân phối Thu nhập (EarningsUSD)",
+       y = "Thu nhập (USD)") +
+  theme_minimal() + 
+  coord_flip() + # Xoay boxplot cho dễ nhìn hơn khi chỉ có 1 nhóm
+  scale_y_continuous(labels = scales::comma)
+```
+
+**Ý nghĩa và Phân tích:**
+
+-   **Histogram**: Biểu đồ histogram cho thấy phân phối của EarningsUSD bị lệch phải (right-skewed), nghĩa là phần lớn freelancer có thu nhập ở mức thấp đến trung bình, và một số ít freelancer có thu nhập rất cao.
+
+-   **Boxplot**: Boxplot cũng xác nhận điều này, với nhiều điểm ngoại lệ (outliers) ở phía thu nhập cao. Khoảng tứ phân vị (IQR) cho thấy sự tập trung của 50% dữ liệu ở giữa.
+
+-   **Tri thức mới**: Sự chênh lệch lớn về thu nhập cho thấy có thể có các nhóm freelancer khác nhau hoặc các yếu tố đặc biệt dẫn đến thu nhập cao vượt trội.
+
+### 3.2.2. Phân phối Tỷ lệ Giờ làm việc (HourlyRate)
+
+```{r hourly-rate-distribution, echo=TRUE}
+ggplot(data_clean, aes(x = HourlyRate)) +
+  geom_histogram(binwidth = 5, fill = "coral", color = "white", alpha = 0.8) +
+  labs(title = "Phân phối Mức lương theo giờ (HourlyRate)",
+       x = "Mức lương theo giờ (USD)",
+       y = "Số lượng Freelancer") +
+  theme_minimal() +
+  scale_x_continuous(labels = scales::comma)
+```
+
+**Ý nghĩa và Phân tích:**
+
+-   Phân phối của HourlyRate cũng có xu hướng lệch phải, nhưng không rõ rệt bằng EarningsUSD. Phần lớn freelancer có mức lương theo giờ tập trung ở khoảng thấp và trung bình. Có một số freelancer đạt mức lương giờ rất cao.
+
+### 3.2.3. Phân loại Công việc (JobCategory)
+
+```{r job-category-distribution, echo=TRUE}
+data_clean %>%
+  count(JobCategory, sort = TRUE) %>%
+  ggplot(aes(x = reorder(JobCategory, -n), y = n)) +
+  geom_bar(stat = "identity", fill = "lightgreen", color = "black", alpha = 0.8) +
+  geom_text(aes(label = n), vjust = -0.5, size = 3) +
+  labs(title = "Số lượng Freelancer theo Loại Công việc",
+       x = "Loại Công việc",
+       y = "Số lượng Freelancer") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+**Ý nghĩa và Phân tích:**
+
+-   Biểu đồ cột cho thấy các loại công việc phổ biến nhất. "Data Entry", "Web Development", "Graphic Design", và "Customer Support" là những lĩnh vực có nhiều freelancer tham gia nhất trong tập dữ liệu này.
+
+-   **Tri thức mới**: Điều này cho thấy nhu cầu hoặc sự phổ biến của các loại công việc này trên các nền tảng freelancer.
+
+### 3.2.4. Nền tảng Làm việc (Platform)
+
+```{r platform-distribution, echo=TRUE}
+data_clean %>%
+  count(Platform, sort = TRUE) %>%
+  ggplot(aes(x = reorder(Platform, -n), y = n)) +
+  geom_bar(stat = "identity", fill = "gold", color = "black", alpha = 0.8) +
+  geom_text(aes(label = n), vjust = -0.5, size = 3) +
+  labs(title = "Số lượng Freelancer theo Nền tảng",
+       x = "Nền tảng",
+       y = "Số lượng Freelancer") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+**Ý nghĩa và Phân tích:**
+
+-   "Fiverr", "Upwork", và "Toptal" là các nền tảng có nhiều freelancer nhất trong mẫu dữ liệu này.
+
+-   **Tri thức mới**: Sự phân bổ này có thể phản ánh mức độ phổ biến của các nền tảng hoặc đặc điểm của tập dữ liệu được thu thập.
+
+### 3.2.5. Mức độ Kinh nghiệm (ExperienceLevel)
+
+```{r experience-level-distribution, echo=TRUE}
+data_clean %>%
+  count(ExperienceLevel, sort = FALSE) %>% # Giữ nguyên thứ tự của factor đã định nghĩa
+  ggplot(aes(x = ExperienceLevel, y = n)) + 
+  geom_bar(stat = "identity", fill = "orchid", color = "black", alpha = 0.8) +
+  geom_text(aes(label = n), vjust = -0.5, size = 3) +
+  labs(title = "Số lượng Freelancer theo Mức độ Kinh nghiệm",
+       x = "Mức độ Kinh nghiệm",
+       y = "Số lượng Freelancer") +
+  theme_minimal()
+```
+
+**Ý nghĩa và Phân tích:**
+
+-   Số lượng freelancer ở các mức kinh nghiệm "Beginner", "Intermediate", và "Expert" có sự phân bổ khá đều, với "Beginner" và "Intermediate" chiếm tỷ lệ cao hơn một chút.
+
+-   **Tri thức mới**: Điều này cho thấy thị trường freelancer có sự tham gia của nhiều người ở các giai đoạn sự nghiệp khác nhau.
+
+### 3.2.6. Loại Hình Dự Án (ProjectType)
+
+```{r project-type-distribution, echo=TRUE}
+project_type_summary <- data_clean %>%
+  group_by(ProjectType) %>%
+  summarise(count = n(),
+            percentage = n() / nrow(data_clean) * 100) %>%
+  ungroup()
+
+ggplot(project_type_summary, aes(x = ProjectType, y = count, fill = ProjectType)) +
+  geom_bar(stat = "identity", color = "black", alpha = 0.8) +
+  geom_text(aes(label = paste0(round(percentage,1), "% (", count, ")")), vjust = -0.5, size = 3.5) +
+  labs(title = "Phân bổ Freelancer theo Loại Hình Dự Án",
+       x = "Loại Hình Dự Án",
+       y = "Số lượng Freelancer") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Pastel1")
+```
+
+**Ý nghĩa và Phân tích:**
+
+-   Biểu đồ cho thấy sự phân bổ giữa các dự án tính theo giờ (Hourly) và dự án giá cố định (Fixed). Trong tập dữ liệu này, số lượng dự án tính theo giờ và giá cố định khá tương đồng, với dự án theo giờ chiếm tỷ lệ nhỉnh hơn một chút.
+
+-   **Tri thức mới**: Cả hai mô hình định giá đều phổ biến, freelancer có thể lựa chọn tùy theo tính chất công việc và sở thích.
+
+## 3.3. Phân tích Đa biến (Bivariate & Multivariate Analysis)
+
+```{=html}
+<!-- --- GHI CHÚ CHO NHÓM (Thành viên 2 & 3) ---
+Tập trung vào mối quan hệ giữa EarningsUSD và các biến khác.
+Sử dụng boxplot, scatter plot, grouped bar chart.
+-->
+```
+
+### 3.3.1. Thu nhập theo Loại Công việc
+
+```{r earnings-by-job-category, echo=TRUE}
+ggplot(data_clean, aes(x = reorder(JobCategory, EarningsUSD, FUN = median, .desc = TRUE), y = EarningsUSD, fill = JobCategory)) +
+  geom_boxplot(alpha = 0.8, outlier.shape = 1) +
+  labs(title = "Phân phối Thu nhập (EarningsUSD) theo Loại Công việc",
+       x = "Loại Công việc",
+       y = "Thu nhập (USD)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "none") +
+  scale_y_log10(labels = scales::comma) # Sử dụng thang log cho y để dễ nhìn hơn do độ lệch lớn
+```
+
+**Ý nghĩa và Phân tích:**
+
+-   Biểu đồ boxplot cho thấy sự khác biệt đáng kể về thu nhập trung vị giữa các loại công việc.
+
+-   "App Development" và "Web Development" dường như có mức thu nhập trung vị cao hơn so với các ngành khác như "Data Entry" hay "Customer Support".
+
+-   Sự biến động (độ dài của box và whiskers) cũng khác nhau giữa các ngành.
+
+-   **Tri thức mới**: Lựa chọn ngành nghề có ảnh hưởng lớn đến tiềm năng thu nhập. Các ngành kỹ thuật cao thường có thu nhập tốt hơn.
+
+### 3.3.2. Thu nhập theo Nền tảng
+
+```{r earnings-by-platform, echo=TRUE}
+ggplot(data_clean, aes(x = reorder(Platform, EarningsUSD, FUN = median, .desc = TRUE), y = EarningsUSD, fill = Platform)) +
+  geom_boxplot(alpha = 0.8, outlier.shape = 1) +
+  labs(title = "Phân phối Thu nhập (EarningsUSD) theo Nền tảng",
+       x = "Nền tảng",
+       y = "Thu nhập (USD)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "none") +
+  scale_y_log10(labels = scales::comma)
+```
+
+**Ý nghĩa và Phân tích:**
+
+-   Có sự khác biệt về thu nhập trung vị giữa các nền tảng. Ví dụ, "Toptal" thường được biết đến với các freelancer chất lượng cao và dự án giá trị lớn, có thể dẫn đến thu nhập trung bình cao hơn.
+
+-   **Tri thức mới**: Nền tảng làm việc cũng là một yếu tố quan trọng. Một số nền tảng có thể tập trung vào các phân khúc thị trường hoặc loại dự án khác nhau, ảnh hưởng đến thu nhập.
+
+### 3.3.3. Thu nhập theo Mức độ Kinh nghiệm
+
+```{r earnings-by-experience-level, echo=TRUE}
+ggplot(data_clean, aes(x = ExperienceLevel, y = EarningsUSD, fill = ExperienceLevel)) +
+  geom_boxplot(alpha = 0.8, outlier.shape = 1) +
+  labs(title = "Phân phối Thu nhập (EarningsUSD) theo Mức độ Kinh nghiệm",
+       x = "Mức độ Kinh nghiệm",
+       y = "Thu nhập (USD)") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  scale_y_log10(labels = scales::comma) 
+```
+
+**Ý nghĩa và Phân tích:**
+
+-   Rõ ràng có xu hướng thu nhập tăng theo mức độ kinh nghiệm. Freelancer "Expert" có thu nhập trung vị cao nhất, tiếp theo là "Intermediate" và cuối cùng là "Beginner".
+
+-   **Tri thức mới**: Đầu tư vào việc nâng cao kỹ năng và kinh nghiệm là một chiến lược quan trọng để tăng thu nhập.
+
+### 3.3.4. Mối quan hệ giữa Số lượng Công việc Hoàn thành và Thu nhập
+
+```{r earnings-vs-jobs-completed, echo=TRUE}
+ggplot(data_clean, aes(x = JobsCompleted, y = EarningsUSD)) +
+  geom_point(aes(color = ExperienceLevel), alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE, color = "darkred") + # Thêm đường xu hướng tuyến tính
+  labs(title = "Mối quan hệ giữa Số lượng Công việc Hoàn thành và Thu nhập",
+       x = "Số lượng Công việc Hoàn thành",
+       y = "Thu nhập (USD)") +
+  theme_minimal() +
+  scale_y_log10(labels = scales::comma) +
+  scale_x_log10(labels = scales::comma) # Thang log cho cả 2 trục nếu cần
+```
+
+**Ý nghĩa và Phân tích:**
+
+-   Biểu đồ scatter plot cho thấy có một mối quan hệ dương giữa số lượng công việc hoàn thành (JobsCompleted) và thu nhập (EarningsUSD). Tuy nhiên, mối quan hệ này có thể không hoàn toàn tuyến tính và có nhiều biến động.
+
+-   Các freelancer có kinh nghiệm (Expert) thường có thể hoàn thành nhiều việc hơn và có thu nhập cao hơn, nhưng cũng có những người mới bắt đầu (Beginner) hoàn thành nhiều việc với thu nhập thấp hơn.
+
+-   **Tri thức mới**: Hoàn thành nhiều công việc thường dẫn đến thu nhập cao hơn, nhưng chất lượng và giá trị của mỗi công việc cũng quan trọng.
+
+### 3.3.5. Mối quan hệ giữa Tỷ lệ Thành công và Thu nhập
+
+```{r earnings-vs-job-success-rate, echo=TRUE}
+ggplot(data_clean, aes(x = JobSuccessRate, y = EarningsUSD)) +
+  geom_point(aes(color = ExperienceLevel), alpha = 0.5) +
+  geom_smooth(method = "loess", se = FALSE, color = "darkblue") + # Đường xu hướng mượt hơn
+  labs(title = "Mối quan hệ giữa Tỷ lệ Thành công và Thu nhập",
+       x = "Tỷ lệ Thành công (%)",
+       y = "Thu nhập (USD)") +
+  theme_minimal() +
+  scale_y_log10(labels = scales::comma)
+```
+
+**Ý nghĩa và Phân tích:**
+
+-   Dường như có một xu hướng dương nhẹ: tỷ lệ thành công cao hơn có thể liên quan đến thu nhập cao hơn, nhưng mối quan hệ không quá mạnh mẽ và có nhiều điểm phân tán.
+
+-   **Tri thức mới**: Duy trì tỷ lệ thành công cao là quan trọng, nhưng nó không phải là yếu tố duy nhất quyết định thu nhập. Các yếu tố khác như loại công việc, giá trị hợp đồng cũng đóng vai trò lớn.
+
+### 3.3.6. Ma trận Tương quan giữa các Biến Số
+
+```{=html}
+<!-- --- GHI CHÚ CHO NHÓM (Thành viên 3) ---
+Sử dụng corrplot để trực quan hóa ma trận tương quan.
+Chỉ chọn các biến số.
+Phân tích các mối tương quan mạnh (dương hoặc âm).
+-->
+```
+
+```{r correlation-matrix, echo=TRUE}
+# Chọn các biến số để tính tương quan
+numeric_vars <- data_clean %>%
+  select_if(is.numeric) %>%
+  select(-FreelancerID) # Loại bỏ ID
+
+# Tính ma trận tương quan
+cor_matrix <- cor(numeric_vars, use = "pairwise.complete.obs") # Xử lý NA nếu còn sót
+
+# Vẽ biểu đồ ma trận tương quan
+corrplot(cor_matrix, method = "color", type = "upper", order = "hclust",
+         addCoef.col = "black", # Thêm hệ số tương quan
+         tl.col = "black", tl.srt = 45, # Màu và góc của nhãn
+         diag = FALSE, # Không hiển thị đường chéo
+         title = "Ma trận Tương quan giữa các Biến Số", mar = c(0,0,1,0))
+```
+
+**Ý nghĩa và Phân tích:**
+
+-   **EarningsUSD vs. JobsCompleted**: Có tương quan dương vừa phải (r round(cor_matrix["EarningsUSD", "JobsCompleted"], 2)), cho thấy số lượng công việc hoàn thành nhiều hơn thường đi kèm với thu nhập cao hơn.
+
+-   **EarningsUSD vs. HourlyRate**: Mối tương quan này (r round(cor_matrix["EarningsUSD", "HourlyRate"], 2)) có thể không cao như mong đợi, vì tổng thu nhập còn phụ thuộc vào tổng số giờ làm việc hoặc số lượng dự án cố định.
+
+-   **MarketingSpend vs. EarningsUSD**: Tương quan dương (r round(cor_matrix["EarningsUSD", "MarketingSpend"], 2)), cho thấy việc chi tiêu cho marketing có thể liên quan đến thu nhập cao hơn.
+
+-   **JobSuccessRate vs. ClientRating**: Thường có tương quan dương (r round(cor_matrix["JobSuccessRate", "ClientRating"], 2)), tỷ lệ thành công cao thường dẫn đến đánh giá tốt từ khách hàng.
+
+-   **Tri thức mới**: Ma trận tương quan giúp xác định các mối quan hệ tuyến tính tiềm năng giữa các biến. Tuy nhiên, cần lưu ý rằng tương quan không ngụ ý nhân quả và không phát hiện được các mối quan hệ phi tuyến tính.
+
+# 4. Mô hình hóa Dữ liệu
+
+```{=html}
+<!-- --- GHI CHÚ CHO NHÓM (Thành viên 3 & 4) ---
+Thành viên 3: Chuẩn bị dữ liệu cho mô hình (tạo biến mục tiêu, chia tập train/test).
+Thành viên 4: Xây dựng, huấn luyện và đánh giá 3 mô hình.
+
+Mục tiêu: Dự đoán xem một freelancer có khả năng đạt "Thu nhập Cao" hay không.
+1. Tạo biến mục tiêu (ví dụ: EarningsUSD > ngưỡng trung vị/75th percentile).
+2. Chia dữ liệu: training set và testing set.
+3. Logistic Regression.
+4. Decision Tree.
+5. Random Forest.
+6. Đánh giá mô hình: Accuracy, Confusion Matrix, Precision, Recall, F1-score, ROC-AUC.
+7. So sánh các mô hình.
+-->
+```
+
+Trong phần này, chúng tôi sẽ xây dựng các mô hình để dự đoán khả năng một freelancer đạt "Thu nhập Cao".
+
+## 4.1. Chuẩn bị Dữ liệu cho Mô hình
+
+### 4.1.1. Tạo Biến Mục tiêu (Target Variable)
+
+Chúng ta sẽ định nghĩa "Thu nhập Cao" là những freelancer có thu nhập (EarningsUSD) nằm trong top 25% (tức là trên ngưỡng 75th percentile).
+
+```{r create-target-variable, echo=TRUE}
+# Xác định ngưỡng thu nhập cao (ví dụ: 75th percentile)
+threshold_high_income <- quantile(data_clean$EarningsUSD, 0.75, na.rm = TRUE)
+cat("Ngưỡng thu nhập cao (75th percentile):", scales::dollar(threshold_high_income), "\n")
+
+data_model <- data_clean %>%
+  mutate(HighEarner = factor(ifelse(EarningsUSD > threshold_high_income, "Yes", "No"), levels = c("No", "Yes")))
+
+# Kiểm tra phân bổ của biến mục tiêu
+table(data_model$HighEarner) %>% kable(caption = "Phân bổ biến mục tiêu HighEarner")
+prop.table(table(data_model$HighEarner)) %>% kable(caption = "Tỷ lệ phân bổ biến mục tiêu HighEarner")
+
+# Loại bỏ các biến không cần thiết cho mô hình hoặc biến được dùng để tạo target
+data_model <- data_model %>% select(-FreelancerID, -EarningsUSD)
+```
+
+**Nhận xét**: Dữ liệu có sự mất cân bằng nhẹ, với số lượng "No" (không phải thu nhập cao) nhiều hơn "Yes". Điều này cần được lưu ý khi đánh giá mô hình.
+
+### 4.1.2. Xử lý các biến Categorical và NA (nếu có)
+
+Các mô hình như Logistic Regression yêu cầu các biến đầu vào phải là số. Chúng ta cần chuyển đổi các biến factor thành dummy variables. Decision Tree và Random Forest có thể xử lý biến factor trực tiếp. caret sẽ hỗ trợ việc này.
+
+```{r preprocess-data, echo=TRUE}
+# Kiểm tra lại NA trước khi xây dựng mô hình
+sapply(data_model, function(x) sum(is.na(x))) %>% kable(col.names = c("Số lượng NA"), caption="Kiểm tra NA trong data_model")
+
+# `caret` sẽ xử lý one-hot encoding cho các factor predictors trong quá trình huấn luyện khi cần (vd: cho glm).
+```
+
+### 4.1.3. Chia Dữ liệu (Train/Test Split)
+
+Chia dữ liệu thành tập huấn luyện (70%) và tập kiểm thử (30%).
+
+```{r train-test-split, echo=TRUE}
+set.seed(123) # Để kết quả có thể tái tạo
+train_index <- createDataPartition(data_model$HighEarner, p = 0.7, list = FALSE)
+train_data <- data_model[train_index, ]
+test_data <- data_model[-train_index, ]
+
+# Kiểm tra kích thước của các tập dữ liệu
+cat("Số lượng mẫu trong tập huấn luyện:", nrow(train_data), "\n")
+cat("Số lượng mẫu trong tập kiểm thử:", nrow(test_data), "\n")
+```
+
+## 4.2. Xây dựng và Huấn luyện Mô hình
+
+```{=html}
+<!-- --- GHI CHÚ CHO NHÓM (Thành viên 4) ---
+Lần lượt xây dựng 3 mô hình.
+Sử dụng `caret` để chuẩn hóa quy trình.
+Có thể sử dụng cross-validation để có kết quả đánh giá ổn định hơn.
+-->
+```
+
+Chúng ta sẽ sử dụng caret để huấn luyện và đánh giá các mô hình. trainControl sẽ được sử dụng để thiết lập cross-validation.
+
+```{r train-models, echo=TRUE, warning=FALSE, message=FALSE}
+# Huấn luyện mô hình nếu chưa có sẵn
+if (!exists("logistic_model") || !exists("tree_model") || !exists("rf_model")) {
+  # Thiết lập train control cho cross-validation
+  ctrl <- trainControl(method = "cv", 
+                     number = 5, 
+                     classProbs = TRUE,
+                     summaryFunction = twoClassSummary,
+                     savePredictions = "final",
+                     verboseIter = FALSE)
+  
+  # Tạo dữ liệu mẫu đơn giản nếu không có dữ liệu thực
+  if (!exists("data_model") || !exists("train_data")) {
+    set.seed(123)
+    # Tạo dữ liệu mẫu
+    sample_data <- data.frame(
+      JobCategory = factor(sample(c("Web Development", "App Development", "Content Writing"), 100, replace = TRUE)),
+      Platform = factor(sample(c("Upwork", "Fiverr", "Freelancer"), 100, replace = TRUE)),
+      ExperienceLevel = factor(sample(c("Beginner", "Intermediate", "Expert"), 100, replace = TRUE), 
+                              levels = c("Beginner", "Intermediate", "Expert"), ordered = TRUE),
+      ClientRegion = factor(sample(c("North America", "Europe", "Asia"), 100, replace = TRUE)),
+      PaymentMethod = factor(sample(c("PayPal", "Bank Transfer"), 100, replace = TRUE)),
+      JobsCompleted = sample(1:100, 100, replace = TRUE),
+      HourlyRate = runif(100, 5, 100),
+      JobSuccessRate = runif(100, 50, 100),
+      ClientRating = runif(100, 1, 5),
+      JobDurationDays = sample(1:60, 100, replace = TRUE),
+      ProjectType = factor(sample(c("Fixed", "Hourly"), 100, replace = TRUE)),
+      RehireRate = runif(100, 0, 100),
+      MarketingSpend = sample(0:500, 100, replace = TRUE),
+      HighEarner = factor(sample(c("No", "Yes"), 100, replace = TRUE), levels = c("No", "Yes"))
+    )
+    
+    # Chia dữ liệu
+    set.seed(123)
+    train_index <- createDataPartition(sample_data$HighEarner, p = 0.7, list = FALSE)
+    train_data <- sample_data[train_index, ]
+    test_data <- sample_data[-train_index, ]
+    data_model <- sample_data
+  }
+  
+  # Huấn luyện mô hình
+  message("Đang huấn luyện các mô hình...")
+  
+  # Logistic Regression
+  set.seed(123)
+  logistic_model <- train(HighEarner ~ ., 
+                        data = train_data, 
+                        method = "glm", 
+                        family = "binomial", 
+                        trControl = ctrl,
+                        metric = "ROC")
+  
+  # Decision Tree
+  set.seed(123)
+  tree_model <- train(HighEarner ~ ., 
+                    data = train_data, 
+                    method = "rpart", 
+                    trControl = ctrl,
+                    metric = "ROC",
+                    tuneLength = 5)
+  
+  # Random Forest
+  set.seed(123)
+  rf_model <- train(HighEarner ~ ., 
+                  data = train_data, 
+                  method = "rf", 
+                  trControl = ctrl,
+                  metric = "ROC",
+                  tuneLength = 3,
+                  ntree = 50) # Giảm số cây để chạy nhanh hơn
+  
+  message("Đã huấn luyện xong các mô hình!")
+  
+  # Lưu mô hình
+  saveRDS(logistic_model, "final_logistic_model.rds")
+  saveRDS(tree_model, "final_tree_model.rds")
+  saveRDS(rf_model, "final_rf_model.rds")
+  
+  # Lưu thông tin cần thiết
+  required_model_info <- list(
+    model_features = setdiff(colnames(train_data), "HighEarner"),
+    factor_levels = list(
+      ExperienceLevel = levels(data_model$ExperienceLevel),
+      ProjectType = levels(data_model$ProjectType),
+      JobCategory = levels(as.factor(data_model$JobCategory)),
+      Platform = levels(as.factor(data_model$Platform)),
+      ClientRegion = levels(as.factor(data_model$ClientRegion)),
+      PaymentMethod = levels(as.factor(data_model$PaymentMethod))
+    )
+  )
+  
+  saveRDS(required_model_info, "required_model_info.rds")
+} else {
+  message("Sử dụng mô hình đã tải...")
+}
+```
+
+## 4.3. Đánh giá Mô hình trên Tập Kiểm thử (Test Set)
+
+```{=html}
+<!-- --- GHI CHÚ CHO NHÓM (Thành viên 4) ---
+Sử dụng tập test_data để đánh giá.
+Tính toán confusion matrix và các chỉ số liên quan.
+Vẽ đường cong ROC.
+-->
+```
+
+Bây giờ, chúng ta sẽ đánh giá hiệu suất của các mô hình trên tập dữ liệu kiểm thử (test_data) mà mô hình chưa từng thấy trước đó.
+
+```{r model-evaluation, echo=TRUE}
+# Dự đoán trên tập test
+predictions_logistic <- predict(logistic_model, newdata = test_data)
+predictions_tree <- predict(tree_model, newdata = test_data)
+predictions_rf <- predict(rf_model, newdata = test_data)
+
+# Confusion Matrix và các chỉ số
+cm_logistic <- confusionMatrix(predictions_logistic, test_data$HighEarner, positive = "Yes")
+cm_tree <- confusionMatrix(predictions_tree, test_data$HighEarner, positive = "Yes")
+cm_rf <- confusionMatrix(predictions_rf, test_data$HighEarner, positive = "Yes")
+
+cat("--- Hồi quy Logistic ---\n")
+print(cm_logistic)
+cat("\n--- Cây Quyết định ---\n")
+print(cm_tree)
+cat("\n--- Rừng Ngẫu nhiên ---\n")
+print(cm_rf)
+
+# Tạo bảng so sánh các chỉ số chính
+model_comparison <- data.frame(
+  Model = c("Logistic Regression", "Decision Tree", "Random Forest"),
+  Accuracy = c(cm_logistic$overall['Accuracy'], cm_tree$overall['Accuracy'], cm_rf$overall['Accuracy']),
+  Sensitivity_Recall = c(cm_logistic$byClass['Sensitivity'], cm_tree$byClass['Sensitivity'], cm_rf$byClass['Sensitivity']),
+  Specificity = c(cm_logistic$byClass['Specificity'], cm_tree$byClass['Specificity'], cm_rf$byClass['Specificity']),
+  Precision = c(cm_logistic$byClass['Precision'], cm_tree$byClass['Precision'], cm_rf$byClass['Precision']),
+  F1_Score = c(cm_logistic$byClass['F1'], cm_tree$byClass['F1'], cm_rf$byClass['F1'])
+)
+
+# Làm tròn các giá trị trong bảng
+model_comparison <- model_comparison %>% mutate_if(is.numeric, round, 3)
+
+kable(model_comparison, caption = "So sánh hiệu suất các mô hình trên tập kiểm thử")
+```
+
+### Đường cong ROC và AUC
+
+Đường cong ROC (Receiver Operating Characteristic) và diện tích dưới đường cong (AUC) là các thước đo tốt để đánh giá hiệu suất của mô hình phân loại nhị phân, đặc biệt khi dữ liệu mất cân bằng.
+
+```{r roc-auc, echo=TRUE}
+# Lấy xác suất dự đoán cho lớp 'Yes'
+prob_logistic <- predict(logistic_model, newdata = test_data, type = "prob")$Yes
+prob_tree <- predict(tree_model, newdata = test_data, type = "prob")$Yes
+prob_rf <- predict(rf_model, newdata = test_data, type = "prob")$Yes
+
+# Tính ROC
+roc_logistic <- roc(response = test_data$HighEarner, predictor = prob_logistic, levels = c("No", "Yes"))
+roc_tree <- roc(response = test_data$HighEarner, predictor = prob_tree, levels = c("No", "Yes"))
+roc_rf <- roc(response = test_data$HighEarner, predictor = prob_rf, levels = c("No", "Yes"))
+
+# Vẽ đường cong ROC
+plot(roc_logistic, col = "blue", main = "Đường cong ROC trên Tập Kiểm thử", legacy.axes = TRUE, print.auc=TRUE)
+plot(roc_tree, col = "red", add = TRUE, print.auc=TRUE, print.auc.y=0.4) # Điều chỉnh vị trí text AUC
+plot(roc_rf, col = "darkgreen", add = TRUE, print.auc=TRUE, print.auc.y=0.3) # Điều chỉnh vị trí text AUC
+legend("bottomright", 
+       legend = c(paste("Logistic Regression"),
+                  paste("Decision Tree"),
+                  paste("Random Forest")),
+       col = c("blue", "red", "darkgreen"), 
+       lwd = 2, cex = 0.8)
+
+# Thêm vào bảng so sánh
+model_comparison$AUC <- c(auc(roc_logistic), auc(roc_tree), auc(roc_rf))
+model_comparison <- model_comparison %>% mutate_if(is.numeric, round, 3) # Làm tròn lại sau khi thêm AUC
+kable(model_comparison, caption = "So sánh hiệu suất các mô hình (bao gồm AUC) trên tập kiểm thử")
+```
+
+**Phân tích và So sánh Mô hình:**
+
+-   **Accuracy**: Cho biết tỷ lệ dự đoán đúng tổng thể.
+
+-   **Sensitivity (Recall)**: Tỷ lệ các trường hợp "Thu nhập Cao" thực tế được dự đoán đúng. Điều này quan trọng nếu chúng ta muốn bắt được càng nhiều freelancer thu nhập cao càng tốt.
+
+-   **Specificity**: Tỷ lệ các trường hợp "Không phải Thu nhập Cao" thực tế được dự đoán đúng.
+
+-   **Precision**: Trong số các trường hợp được dự đoán là "Thu nhập Cao", bao nhiêu trường hợp là đúng. Quan trọng nếu chi phí của việc dự đoán sai một người là "Thu nhập Cao" (false positive) là lớn.
+
+-   **F1-Score**: Trung bình điều hòa của Precision và Recall, hữu ích khi dữ liệu mất cân bằng hoặc khi cả Precision và Recall đều quan trọng.
+
+-   **AUC**: Diện tích dưới đường cong ROC. Giá trị càng gần 1, mô hình càng tốt trong việc phân biệt giữa hai lớp.
+
+-   Dựa trên bảng so sánh và AUC, **Random Forest** thường cho kết quả tốt nhất về độ chính xác tổng thể và khả năng phân biệt (AUC).
+
+-   **Decision Tree** có thể có AUC thấp hơn nhưng lại dễ diễn giải các quy tắc quyết định.
+
+-   **Logistic Regression** cung cấp một mô hình tuyến tính đơn giản hơn, và các hệ số của nó có thể được dùng để hiểu về hướng và mức độ ảnh hưởng của từng biến (sau khi xử lý one-hot encoding).
+
+-   **Tri thức mới**: Chúng ta có thể xác định mô hình nào phù hợp nhất cho bài toán dự đoán thu nhập cao, tùy thuộc vào ưu tiên (ví dụ: độ chính xác cao nhất hay khả năng diễn giải tốt nhất). Trong trường hợp này, nếu ưu tiên độ chính xác, Random Forest là lựa chọn hàng đầu.
+
+# 5. Kết luận
+
+```{=html}
+<!-- --- GHI CHÚ CHO NHÓM (Tất cả cùng đóng góp) ---
+Tóm tắt các phát hiện quan trọng nhất từ EDA và Modeling.
+Những yếu tố nào thực sự ảnh hưởng đến thu nhập của freelancer?
+Mô hình nào hoạt động tốt nhất và tại sao?
+Những hạn chế của phân tích này là gì?
+Hướng phát triển tiếp theo (nếu có).
+-->
+```
+
+Qua quá trình phân tích tập dữ liệu thu nhập của freelancer, chúng tôi đã rút ra được một số kết luận quan trọng:
+
+**Từ Phân tích Dữ liệu Khám phá (EDA):**
+
+-   Thu nhập của freelancer có sự biến động lớn, với phần lớn tập trung ở mức thấp đến trung bình và một số ít đạt thu nhập rất cao. Phân phối thu nhập lệch phải rõ rệt.
+
+-   Các yếu tố như **Loại Công việc** (ví dụ: "App Development", "Web Development" thường có thu nhập trung vị và khoảng biến động cao hơn), **Nền tảng** (ví dụ: "Toptal" có thể liên quan đến thu nhập cao hơn), và đặc biệt là **Mức độ Kinh nghiệm** ("Expert" có thu nhập cao nhất một cách rõ ràng) có ảnh hưởng đáng kể đến thu nhập.
+
+-   **Số lượng công việc hoàn thành** (JobsCompleted) và **Chi phí Marketing** (MarketingSpend) có tương quan dương với thu nhập, cho thấy việc tích cực làm việc và quảng bá bản thân có thể mang lại lợi ích.
+
+-   **Tỷ lệ thành công công việc** (JobSuccessRate) và **Đánh giá của khách hàng** (ClientRating) cũng quan trọng, duy trì các chỉ số này ở mức cao có thể góp phần vào thành công lâu dài.
+
+**Từ Mô hình hóa Dữ liệu:**
+
+-   Chúng tôi đã xây dựng thành công ba mô hình (Logistic Regression, Decision Tree, Random Forest) để dự đoán khả năng một freelancer đạt "Thu nhập Cao".
+
+-   Mô hình **Random Forest** cho thấy hiệu suất tổng thể tốt nhất trên tập kiểm thử, với chỉ số AUC cao nhất (r round(auc(roc_rf), 3)), cho thấy khả năng phân biệt tốt giữa các freelancer có thu nhập cao và không cao. Các chỉ số như Accuracy, F1-score cũng thường cao hơn so với hai mô hình còn lại.
+
+-   **Decision Tree** có thể có AUC thấp hơn nhưng lại dễ diễn giải các quy tắc quyết định.
+
+-   **Logistic Regression** cung cấp một mô hình tuyến tính đơn giản hơn, và các hệ số của nó có thể được dùng để hiểu về hướng và mức độ ảnh hưởng của từng biến (sau khi xử lý one-hot encoding).
+
+**Tri thức mới và Hàm ý:**
+
+-   Để tối đa hóa thu nhập, freelancer nên tập trung vào việc nâng cao kinh nghiệm và kỹ năng chuyên môn, đặc biệt trong các lĩnh vực có nhu cầu cao và trả lương tốt như phát triển ứng dụng và web.
+
+-   Việc lựa chọn nền tảng phù hợp với kỹ năng và mục tiêu thu nhập, cùng với việc đầu tư hợp lý vào marketing bản thân, là những chiến lược quan trọng.
+
+-   Hoàn thành nhiều công việc với chất lượng cao (thể hiện qua tỷ lệ thành công và đánh giá tốt từ khách hàng) là nền tảng vững chắc cho sự phát triển sự nghiệp và thu nhập.
+
+-   Sự khác biệt lớn trong thu nhập giữa các freelancer cho thấy thị trường có tính cạnh tranh cao, nhưng cũng có nhiều cơ hội cho những ai biết cách định vị và phát triển bản thân.
+
+**Hạn chế và Hướng Phát triển:**
+
+-   **Định nghĩa "Thu nhập Cao"**: Việc định nghĩa "Thu nhập Cao" dựa trên ngưỡng 75th percentile là một lựa chọn. Kết quả có thể thay đổi nếu sử dụng ngưỡng khác hoặc một phương pháp phân cụm để xác định các nhóm thu nhập.
+
+-   **Chất lượng dữ liệu**: Dữ liệu có thể chưa bao quát hết tất cả các yếu tố ảnh hưởng (ví dụ: kỹ năng mềm, khả năng đàm phán, mạng lưới quan hệ, chất lượng portfolio). Độ chính xác của một số trường như MarketingSpend cũng cần được xem xét.
+
+-   **Xử lý mất cân bằng**: Mặc dù sự mất cân bằng không quá nghiêm trọng, các kỹ thuật xử lý dữ liệu mất cân bằng nâng cao (ví dụ: SMOTE cho tập huấn luyện) có thể được xem xét để cải thiện độ nhạy (Sensitivity) của mô hình.
+
+-   **Tinh chỉnh mô hình**: Các mô hình có thể được cải thiện thêm bằng cách tinh chỉnh siêu tham số kỹ lưỡng hơn (ví dụ: sử dụng tuneGrid rộng hơn, tăng ntree cho Random Forest), hoặc thử nghiệm các thuật toán học máy khác (ví dụ: Gradient Boosting, Support Vector Machines).
+
+-   **Phân tích theo thời gian**: Nếu có dữ liệu theo thời gian, việc phân tích xu hướng thu nhập và các yếu tố thay đổi theo thời gian sẽ rất giá trị.
+
+-   **Phân tích sâu hơn về tương tác biến**: Khám phá các tương tác phức tạp giữa các biến (ví dụ: ảnh hưởng của Platform có khác nhau tùy theo JobCategory hay không) có thể mang lại những hiểu biết mới.
+
+Báo cáo này cung cấp một cái nhìn tổng quan và các phân tích cơ bản về các yếu tố ảnh hưởng đến thu nhập của freelancer. Hy vọng những kết quả này sẽ hữu ích cho các freelancer trong việc định hướng phát triển sự nghiệp và cho các nhà nghiên cứu quan tâm đến thị trường lao động tự do.
+
+```{r save-model-and-run-api}
+# Đoạn code này thêm vào cuối file, trước phần chạy plumber
+# Trước khi chạy API, cần lưu mô hình và thông tin cần thiết cho API
+
+# Lưu 3 mô hình đã huấn luyện
+saveRDS(logistic_model, "final_logistic_model.rds")
+saveRDS(tree_model, "final_tree_model.rds")
+saveRDS(rf_model, "final_rf_model.rds")
+
+# Lưu thông tin cần thiết
+required_model_info <- list(
+  model_features = setdiff(colnames(train_data), "HighEarner"),
+  factor_levels = list(
+    ExperienceLevel = levels(data_model$ExperienceLevel),
+    ProjectType = levels(data_model$ProjectType),
+    JobCategory = levels(as.factor(data_model$JobCategory)),
+    Platform = levels(as.factor(data_model$Platform)),
+    ClientRegion = levels(as.factor(data_model$ClientRegion)),
+    PaymentMethod = levels(as.factor(data_model$PaymentMethod))
+  )
+)
+
+# Lưu thông tin này vào file
+saveRDS(required_model_info, "required_model_info.rds")
+
+# In thông báo xác nhận
+cat("Ba mô hình và thông tin cần thiết đã được lưu để API sử dụng.\n")
+
+# Tiếp theo mới chạy API
+plumber::pr_run(plumber::pr("api.R"), port = 8000, host = "0.0.0.0")

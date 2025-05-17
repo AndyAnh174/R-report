@@ -1,0 +1,108 @@
+---
+title: "Báo cáo Phân tích Thu nhập của Freelancer"
+author: "Nhóm [Tên Nhóm Của Bạn]"
+date: "`r Sys.Date()`"
+output:
+  word_document:
+    toc: true
+  html_document:
+    toc: true
+    toc_float: true
+    theme: united
+    highlight: tango
+    code_folding: hide
+    df_print: kable
+  pdf_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, fig.align = 'center')
+
+# --- GHI CHÚ CHO NHÓM ---
+# Thành viên 1 (Data Loading & Cleaning): [Tên Thành Viên 1]
+# Thành viên 2 (EDA - Univariate & Bivariate Visualizations): [Tên Thành Viên 2]
+# Thành viên 3 (EDA - Multivariate & Advanced Visualizations, Initial Modeling Prep): [Tên Thành Viên 3]
+# Thành viên 4 (Modeling - Logistic, Decision Tree, Random Forest, Evaluation): [Tên Thành Viên 4]
+# Người review tổng thể: [Tên Người Review]
+
+# --- TẢI CÁC THƯ VIỆN CẦN THIẾT ---
+# Đảm bảo rằng các thư viện này đã được cài đặt
+# install.packages(c("tidyverse", "skimr", "DataExplorer", "corrplot", "rpart", "rpart.plot", "randomForest", "caret", "pROC", "knitr"))
+install.packages("tinytex", repos = "https://cloud.r-project.org/")
+
+install.packages("tinytex")
+tinytex::install_tinytex()
+tinytex::is_tinytex()
+library(tidyverse)    # Dành cho data manipulation và ggplot2
+library(skimr)        # Dành cho thống kê mô tả nhanh
+# library(DataExplorer) # Dành cho EDA tự động (tùy chọn, có thể bỏ comment nếu muốn dùng)
+library(corrplot)     # Dành cho biểu đồ ma trận tương quan
+library(rpart)        # Dành cho Decision Tree
+library(rpart.plot)   # Dành cho vẽ Decision Tree đẹp hơn
+library(randomForest) # Dành cho Random Forest
+library(caret)        # Dành cho training và evaluation mô hình
+library(pROC)         # Dành cho ROC curve
+library(knitr)        # Dành cho hiển thị bảng đẹp (kable)
+```
+
+# 1. Giới thiệu
+
+```{=html}
+<!-- --- GHI CHÚ CHO NHÓM (Thành viên 1) ---
+Phần này mô tả tổng quan về dự án.
+- Mục tiêu: Phân tích tập dữ liệu thu nhập của freelancer để hiểu các yếu tố ảnh hưởng đến thu nhập và xây dựng mô hình dự đoán.
+- Dữ liệu: Mô tả ngắn gọn về nguồn gốc dữ liệu (freelancer_earnings_bd.csv) và các trường chính.
+- Công cụ: R và R Markdown.
+-->
+```
+
+Báo cáo này nhằm mục đích phân tích chi tiết tập dữ liệu về thu nhập của các freelancer. Chúng tôi sẽ khám phá các yếu tố như loại công việc, nền tảng, mức độ kinh nghiệm, khu vực khách hàng, và các chỉ số hiệu suất khác ảnh hưởng như thế nào đến thu nhập (Earnings_USD) của freelancer. Thông qua phân tích dữ liệu khám phá (EDA) và xây dựng các mô hình dự đoán, chúng tôi hy vọng sẽ rút ra được những hiểu biết sâu sắc và có giá trị, giúp các freelancer tối ưu hóa chiến lược làm việc và thu nhập của mình. Dữ liệu được sử dụng là freelancer_earnings_bd.csv, chứa thông tin đa dạng về các freelancer và công việc của họ.
+
+# 2. Tải và Chuẩn bị Dữ liệu
+
+```{=html}
+<!-- --- GHI CHÚ CHO NHÓM (Thành viên 1) ---
+Phần này sẽ thực hiện các bước:
+1. Đọc dữ liệu từ file CSV.
+2. Xem xét cấu trúc và các kiểu dữ liệu ban đầu.
+3. Làm sạch dữ liệu:
+- Xử lý giá trị thiếu (NA).
+- Chuyển đổi kiểu dữ liệu (ví dụ: số, ký tự, factor).
+- Chuẩn hóa tên cột và giá trị trong cột (ví dụ: dùng str_to_title).
+4. Hiển thị một phần dữ liệu đã làm sạch.
+Lưu ý: Code làm sạch dưới đây được điều chỉnh từ file Plumber của nhóm.
+-->
+```
+
+```{r save-model-and-run-api}
+# Đoạn code này thêm vào cuối file, trước phần chạy plumber
+# Trước khi chạy API, cần lưu mô hình và thông tin cần thiết cho API
+
+# Lưu 3 mô hình đã huấn luyện
+saveRDS(logistic_model, "final_logistic_model.rds")
+saveRDS(tree_model, "final_tree_model.rds")
+saveRDS(rf_model, "final_rf_model.rds")
+
+# Lưu thông tin cần thiết cho việc xử lý dữ liệu và dự đoán
+required_model_info <- list(
+  model_features = setdiff(colnames(train_data), "HighEarner"),
+  factor_levels = list(
+    ExperienceLevel = levels(data_model$ExperienceLevel),
+    ProjectType = levels(data_model$ProjectType),
+    JobCategory = levels(as.factor(data_model$JobCategory)),
+    Platform = levels(as.factor(data_model$Platform)),
+    ClientRegion = levels(as.factor(data_model$ClientRegion)),
+    PaymentMethod = levels(as.factor(data_model$PaymentMethod))
+  )
+)
+
+# Lưu thông tin này vào file
+saveRDS(required_model_info, "required_model_info.rds")
+
+# In thông báo xác nhận
+cat("Ba mô hình và thông tin cần thiết đã được lưu để API sử dụng.\n")
+
+# Tiếp theo mới chạy API
+plumber::pr_run(plumber::pr("api.R"), port = 8000, host = "0.0.0.0")
+``` 

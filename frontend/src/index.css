@@ -27,3 +27,75 @@ body {
   height: 100%;
   width: 100%;
 }
+
+/* Excel-like table styles */
+.excel-table-container {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.excel-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.875rem;
+}
+
+.excel-table th {
+  background-color: #f3f4f6;
+  color: #374151;
+  font-weight: 600;
+  text-align: left;
+  padding: 0.75rem 0.5rem;
+  border: 1px solid #d1d5db;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.excel-table td {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+
+.excel-table tr:hover td {
+  background-color: #eff6ff;
+}
+
+.excel-table tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.excel-table tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+/* Cell types */
+.excel-table .cell-number {
+  text-align: right;
+}
+
+.excel-table .cell-text {
+  text-align: left;
+}
+
+/* Scrollbar customization for Excel-like feel */
+.excel-table-container ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.excel-table-container ::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.excel-table-container ::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.excel-table-container ::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
